@@ -2,7 +2,7 @@ Name:                diagrams-tests
 Version:             0.1
 Synopsis:            Test framework for diagrams
 Description:         This package provides a framework for generating
-                     diagrams (for arbitrary back ends) and presenting
+                     diagrams (for specific back ends) and presenting
                      them beside known (golden) images.
 Homepage:            http://code.haskell.org/diagrams/
 License:             BSD3
@@ -17,6 +17,8 @@ Source-repository head
   type:     git
   location: git://github.com/ku-fpg/diagrams-tests.git
 
+
+-- Use cabal configure -fcanvas to test the canvas backend
 Flag canvas
   Description: Test HTML5 canvas backend
   Default:     False
