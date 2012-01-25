@@ -39,7 +39,7 @@ runTests tests name exec = do
                      return
                         $ tr
                         $ concatHtml [ td ! [valign "top", bgcolor "#eeeeee"]  $ toHtml nm
-                                     , td $ golden
+                                     , td ! [valign "top"] $ golden
                                      , td $ inside
                                      ]
                 | t@(Test nm _) <- tests
