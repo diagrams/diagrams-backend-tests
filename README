@@ -1,0 +1,45 @@
+This is a simple test framework for diagrams.
+
+To test diagrams, first configure
+
+% cabal configure -fcairo 
+
+Supported backends are: cairo, canvas (HTML5).
+
+Then build
+
+% cabal build
+
+Then run
+
+% ./dist/build/cairo-test/cairo-test
+
+This generates a file called cairo-index.html (or canvas-index.html, etc).
+
+Open this in your browser.
+
+% open cairo-index.html
+
+Thats it!
+
+------------------------------------------------------------------------
+## Adding tests ##
+------------------------------------------------------------------------
+
+Edit src/Diagrams/Tests.hs, and add to the examples list. Feel free to use
+helper functions inside the Tests.hs file. The name of the test should be
+a (UNIX) filename (no spaces, no slashes, no stars, etc)
+
+------------------------------------------------------------------------
+## Adding backends ##
+------------------------------------------------------------------------
+
+To add a new backend, see the templates in *cabal, and tests/*hs
+Specifically:
+ * Add a new -f<FOO> option and Executable <FOO>-test in diagrams-tests.cabal
+ * Add a <FOO>.hs in tests.
+
+Now you can use
+
+% cabal configure -f<FOO>
+
