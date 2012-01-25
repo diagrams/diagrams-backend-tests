@@ -35,7 +35,7 @@ runTests tests name exec = do
                              ]
         result_rows <- sequence
                 [ do inside <- exec t
-                     let golden = H.image ! [src ("expected_" ++ nm ++ ".png")]
+                     let golden = H.image ! [src ("ref/" ++ nm ++ ".png")]
                      return
                         $ tr
                         $ concatHtml [ td ! [valign "top", bgcolor "#eeeeee"]  $ toHtml nm
