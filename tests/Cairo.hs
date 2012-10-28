@@ -1,10 +1,11 @@
 module Main where
 
-import Text.Html as H
-import Diagrams.Prelude hiding (D)
 import Diagrams.Backend.Cairo
+import Diagrams.Backend.Cairo.Internal
+import Diagrams.Prelude hiding (D)
 import Diagrams.Tests
 import System.Directory
+import Text.Html as H
 
 main = do
    -- all output is put into the canvas directory

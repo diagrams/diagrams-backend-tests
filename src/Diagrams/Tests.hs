@@ -6,9 +6,9 @@ module Diagrams.Tests
         , examples
         ) where
 
-import Diagrams.Prelude
-import Diagrams.Combinators
-import Text.Html (Html, tr, concatHtml, th, (<<), valign, toHtml, (!), body, table, renderHtml, src, td, bgcolor)
+import           Diagrams.Core.Points
+import           Diagrams.Prelude
+import           Text.Html (Html, tr, concatHtml, th, (<<), valign, toHtml, (!), body, table, renderHtml, src, td, bgcolor)
 import qualified Text.Html as H
 
 -----------------------------------------------------------------------
@@ -65,7 +65,7 @@ examples =
         , Test "arc" $
                 arc (tau/4 :: Rad) (4 * tau / 7 :: Rad)
         , Test "Pre-defined-shapes" $
-                square 1 ||| rect 0.3 0.5 ||| eqTriangle 1 ||| roundedRect (0.7,0.4) 0.1
+                square 1 ||| rect 0.3 0.5 ||| eqTriangle 1 ||| roundedRect 0.7 0.4 0.1
         , Test "circle-hrule-circle" $
                 circle 1 ||| hrule 2 ||| circle 1
         , Test "poly-example" $
@@ -85,7 +85,7 @@ examples =
                         , circle 1 # fc red
                         ]
         , Test "juxtaposing1" $
-                beside (20,30) (circle 1 # fc orange) (circle 1.5 # fc purple)
+                beside (20 & 30) (circle 1 # fc orange) (circle 1.5 # fc purple)
                         # showOrigin
         , Test "juxtaposing2" $
                 let d1 = circle 1 # fc red
