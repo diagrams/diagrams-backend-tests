@@ -8,9 +8,9 @@ import System.Directory
 import Text.Html as H
 
 main = do
-   -- all output is put into the canvas directory
+   -- all output is put into the cairo directory
    createDirectoryIfMissing False prefix
-   -- and run the tests to generate the html5 canvas examples
+   -- and run the tests to generate the cairo examples
    runTests (examples) "cairo-index.html" $ [("cairo", \ (Test nm dig) -> do
      fst $ renderDia Cairo (CairoOptions
                            (name nm)
