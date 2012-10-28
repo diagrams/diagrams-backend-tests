@@ -12,7 +12,7 @@ main = do
    createDirectoryIfMissing False "canvas"
    -- and run the tests to generate the html5 canvas examples
    runTests (examples) "canvas-index.html" $ \ (Test nm dig) -> do
-        renderDia Canvas (CanvasOptions (name nm) (Dims 200 200) HTML) dig
+        renderDia Canvas (CanvasOptions (Dims 200 200)) dig
         return
          $ tag "iframe" ! [ src $ name nm
                           , H.height 210
