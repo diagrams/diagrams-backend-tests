@@ -11,7 +11,7 @@ main = do
    -- all output is put into the canvas directory
    createDirectoryIfMissing False "canvas"
    -- and run the tests to generate the html5 canvas examples
-   runTests (examples) "canvas-index.html" $ \ (Test nm dig) -> do
+   runTests (examples) "canvas-index.html" $ [("canvas", \ (Test nm dig) -> do
         renderDia Canvas (CanvasOptions (Dims 200 200)) dig
         return
          $ tag "iframe" ! [ src $ name nm
@@ -21,5 +21,6 @@ main = do
                           , intAttr "marginheight" 0
                           , intAttr "scrolling"    0
                           ] << noHtml
+      )]
   where
      name nm = "canvas/" ++ nm ++ ".html"

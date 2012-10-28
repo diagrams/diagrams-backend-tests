@@ -23,27 +23,31 @@ data Test = Test
 
 -----------------------------------------------------------------------
 
--- | 'runTests' generates an HTML page which contains the executed tests.
--- You need to provide the tests to run (typically 'examples'),
--- the name of the file to generate, and generating an HTML fragment
--- that displays your image.
+-- | 'runTests' generates an HTML page which contains the executed
+--   tests.  You need to provide the tests to run (typically
+--   'examples'), the name of the file to generate, and a list of
+--   backend plugins: each backend should provide its name as well as
+--   a method for creating an HTML fragment that displays the
+--   generated image.
 
-runTests ::  [Test] -> String -> (Test -> IO Html) -> IO ()
-runTests tests name exec = do
-        let header = tr
-                $ concatHtml [ th << "(name)"
-                             , th << "expected output"
-                             , th << "diagram under test"
-                             ]
+runTests ::  [Test] -> String -> [(String, Test -> IO Html)] -> IO ()
+runTests tests name backends = do
+        let (backendNames, execs) = unzip backends
+            header = tr . concatHtml $
+                            [ th << "(name)"
+                            , th << "expected output"
+                            ]
+                            ++
+                            map ((th <<) . (++ " output")) backendNames
         result_rows <- sequence
-                [ do inside <- exec t
+                [ do testHtmls <- mapM ($t) execs
                      let golden = H.image ! [src ("ref/" ++ nm ++ ".png")]
-                     return
-                        $ tr
-                        $ concatHtml [ td ! [valign "top", bgcolor "#eeeeee"]  $ toHtml nm
-                                     , td ! [valign "top"] $ golden
-                                     , td $ inside
-                                     ]
+                     return . tr . concatHtml $
+                       [ td ! [valign "top", bgcolor "#eeeeee"]  $ toHtml nm
+                       , td ! [valign "top"] $ golden
+                       ]
+                       ++
+                       map td testHtmls
                 | t@(Test nm _) <- tests
                 ]
         let doc = body
@@ -102,4 +106,3 @@ poly_example = (poly1 ||| strutX 1 ||| poly2) # lw 0.05
                                , polyOrient = OrientV }
           poly2 = polygon with { polyType   = PolyPolar (repeat (1/40 :: CircleFrac))
                                        (take 40 $ cycle [2,7,4,6]) }
-
