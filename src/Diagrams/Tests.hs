@@ -8,6 +8,7 @@ module Diagrams.Tests
 
 import           Diagrams.Core.Points
 import           Diagrams.Prelude
+import           Diagrams.TwoD.Text
 import           Text.Html (Html, tr, concatHtml, th, (<<), valign, toHtml, (!), body, table, renderHtml, src, td, bgcolor)
 import qualified Text.Html as H
 
@@ -17,6 +18,7 @@ data Test = Test
         String -- ^ the name of the test
         (forall canvas .
                 ( Renderable (Path R2) canvas
+                , Renderable Text      canvas
                 , Backend canvas R2
                 ) => Diagram canvas R2
         ) -- ^ and the diagram
@@ -97,8 +99,73 @@ examples =
                 in  (d1 ||| d2) ||| strutX 3 ||| ( d1
                                                    ===
                                                    d2  )
-        ]
 
+        , Test "freeze" $
+               (square 1 ||| square 1 # freeze # scale 2
+                         ||| circle 1 # freeze # scaleX 3
+               ) # lw 0.03
+
+        , Test "line-attributes" $
+               let path = fromVertices [0 & 0, 1 & 0.3, 2 & 0, 2.2 & 0.3] # lw 0.1
+               in pad 1.1 . centerXY . vcat' with { sep = 0.1 }
+                  $ map (path #)
+                  [ lineCap LineCapButt   . lineJoin LineJoinMiter
+                  , lineCap LineCapRound  . lineJoin LineJoinRound
+                  , lineCap LineCapSquare . lineJoin LineJoinBevel
+                  , dashing [0.1,0.2,0.3,0.1] 0
+                  ]
+
+        , Test "text-basic" $
+               text "Hello world!" <> rect 8 1
+
+        , Test "text-alignment" $
+               let pt = circle 0.1 # fc red
+
+                   t1 = pt <> topLeftText         "top left"   <> rect 8 1
+                   t2 = pt <> baselineText        "baseline"   <> rect 8 1
+                   t3 = pt <> alignedText 0.7 0.5 "(0.7, 0.5)" <> rect 8 1
+
+                   d1 =/= d2 = d1 === strutY 2 === d2
+
+               in  t1 =/= t2 =/= t3
+
+        , Test "text-attributes" $
+               let text' s t = text t # fontSize s <> strutY (s * 1.3)
+               in pad 1.1 . centerXY $
+                    text' 10 "Hello" # italic
+                    === text' 5 "there"  # bold # font "freeserif"
+                    === text' 3 "world"  # fc green
+
+        , Test "text-transforms" $
+               let eff = text "F" <> square 1 # lw 0
+                   ts  = [ scale (1/2), id, scale 2, scaleX 2, scaleY 2
+                         , scale (-1), scaleX (-1), scaleY (-1)
+                         ]
+
+               in  pad 1.1 . hcat . map (eff #) $ ts
+
+        , Test "ring" $
+               let ring :: Path R2
+                   ring = circle 3 <> circle 2
+
+               in  stroke ring # fc purple # fillRule EvenOdd # pad 1.1
+
+        , Test "fill-rules" $
+               let loopyStar = fc red
+                             . mconcat . map (cubicSpline True)
+                             . pathVertices
+                             . star (StarSkip 3)
+                             $ regPoly 7 1
+               in   loopyStar # fillRule EvenOdd
+                    ||| strutX 1
+                    ||| loopyStar # fillRule Winding
+
+        , Test "clip" $
+                square 3
+                # fc green
+                # lw 0.05
+                # clipBy (square 3.2 # rotateBy (1/10))
+        ]
 
 poly_example = (poly1 ||| strutX 1 ||| poly2) # lw 0.05
   where
