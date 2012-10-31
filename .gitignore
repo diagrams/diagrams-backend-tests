@@ -1,4 +1,7 @@
 dist/*
 *~
 canvas/*
-
+svg/*
+cairo/*
+postscript/*
+*-index.html
