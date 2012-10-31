@@ -1,21 +1,21 @@
-Name:                diagrams-tests
+Name:                diagrams-backend-tests
 Version:             0.1
-Synopsis:            Test framework for diagrams
+Synopsis:            Backend test framework for diagrams
 Description:         This package provides a framework for generating
                      diagrams (for specific back ends) and presenting
                      them beside known (golden) images.
-Homepage:            http://code.haskell.org/diagrams/
+Homepage:            http://projects.haskell.org/diagrams/
 License:             BSD3
 License-file:        LICENSE
-Author:              Andy Gill
-Maintainer:          andygill@ku.edu
+Author:              Andy Gill, Brent Yorgey
+Maintainer:          diagrams-discuss@googlegroups.com
 Stability:           Experimental
 Category:            Graphics, Test
 Build-type:          Simple
 Cabal-version:       >=1.10
 Source-repository head
   type:     git
-  location: git://github.com/ku-fpg/diagrams-tests.git
+  location: git://github.com/diagrams/diagrams-backend-tests
 
 
 Flag all
