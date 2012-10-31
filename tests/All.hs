@@ -1,11 +1,13 @@
 module Main where
 
-import Diagrams.Tests
-import Diagrams.Test.SVG
 import Diagrams.Test.Cairo
+import Diagrams.Test.Postscript
+import Diagrams.Test.SVG
+import Diagrams.Tests
 import System.Directory
 
 main = do
    createDirectoryIfMissing False "svg"
    createDirectoryIfMissing False "cairo"
-   runTests examples "index.html" $ [cairoTester, svgTester]
+   createDirectoryIfMissing False "postscript"
+   runTests examples "all-index.html" $ [cairoTester, svgTester, postscriptTester]

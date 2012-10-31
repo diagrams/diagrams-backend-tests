@@ -29,10 +29,12 @@ Executable all-test
                        html >= 1.0.1.2 && < 2.0,
                        directory,
                        filepath,
+                       process,
                        diagrams-core >= 0.6 && < 0.7,
                        diagrams-lib >= 0.6 && < 0.7,
                        diagrams-cairo >= 0.6 && < 0.7,
                        diagrams-svg >= 0.6 && < 0.7,
+                       diagrams-postscript >= 0.6 && < 0.7,
                        blaze-svg >= 0.3.3 && < 0.4,
                        bytestring >= 0.9.2 && < 0.10
      buildable: True
