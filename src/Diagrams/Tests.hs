@@ -177,6 +177,8 @@ examples =
                    reds    = (s darkred ||| s red) === (s pink ||| s indianred)
                in  hcat' with { sep = 1 } . take 4 . iterate (opacity 0.7) $ reds
 
+        , Test "fat" $
+               unitCircle # lw 0.3 # scaleX 2 # pad 1.3
         ]
 
 poly_example = (poly1 ||| strutX 1 ||| poly2) # lw 0.05
