@@ -165,6 +165,19 @@ examples =
                 # fc green
                 # lw 0.05
                 # clipBy (square 3.2 # rotateBy (1/10))
+
+        , Test "alpha-color" $
+
+               let colors  = map (blue `withOpacity`) [0.1, 0.2 .. 1.0]
+               in  hcat' with { catMethod = Distrib, sep = 1 }
+                     (zipWith fcA colors (repeat (circle 1)))
+
+        , Test "opacity1" $
+               let s c     = square 1 # fc c
+                   reds    = (s darkred ||| s red) === (s pink ||| s indianred)
+               in  hcat' with { sep = 1 } . take 4 . iterate (opacity 0.7) $ reds
+
+        ,
         ]
 
 poly_example = (poly1 ||| strutX 1 ||| poly2) # lw 0.05
