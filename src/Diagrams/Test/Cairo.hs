@@ -12,7 +12,7 @@ cairoTester =
   ( "cairo"
   , \ (Test nm dig) -> do
       fst $ renderDia Cairo
-              (CairoOptions (name nm) (Dims 200 200) PNG)
+              (CairoOptions (name nm) (Dims 200 200) PNG False)
               dig
       return $ H.image ! [ src (name nm) ]
   )
