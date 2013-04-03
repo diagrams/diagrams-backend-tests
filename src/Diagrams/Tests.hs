@@ -23,7 +23,7 @@ data Test = Test
         String -- ^ the name of the test
         (forall canvas .
                 ( Renderable (Path R2) canvas
-                , Renderable Text      canvas
+                , Renderable (Text Double) canvas
                 , Backend canvas R2
                 ) => Diagram canvas R2
         ) -- ^ and the diagram
@@ -74,7 +74,7 @@ examples =
         , Test "ellipse" $
                 unitCircle # scaleX 0.5 # rotateBy (1/6)
         , Test "arc" $
-                arc (tau/4 :: Rad) (4 * tau / 7 :: Rad)
+                arc (tau/4 # rad) (4 * tau / 7 # rad)
         , Test "Pre-defined-shapes" $
                 square 1 ||| rect 0.3 0.5 ||| eqTriangle 1 ||| roundedRect 0.7 0.4 0.1
         , Test "circle-hrule-circle" $
@@ -190,5 +190,5 @@ poly_example = (poly1 ||| strutX 1 ||| poly2) # lw 0.05
   where
           poly1 = polygon with { polyType   = PolyRegular 13 5
                                , polyOrient = OrientV }
-          poly2 = polygon with { polyType   = PolyPolar (repeat (1/40 :: CircleFrac))
+          poly2 = polygon with { polyType   = PolyPolar (repeat (1/40 # circleFrac))
                                        (take 40 $ cycle [2,7,4,6]) }
