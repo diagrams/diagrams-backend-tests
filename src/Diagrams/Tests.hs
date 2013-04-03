@@ -1,4 +1,7 @@
-{-# LANGUAGE FlexibleContexts, RankNTypes, NoMonomorphismRestriction #-}
+{-# LANGUAGE FlexibleContexts          #-}
+{-# LANGUAGE MultiParamTypeClasses     #-}
+{-# LANGUAGE NoMonomorphismRestriction #-}
+{-# LANGUAGE RankNTypes                #-}
 
 module Diagrams.Tests
         ( Test(..)
@@ -9,8 +12,10 @@ module Diagrams.Tests
 import           Diagrams.Core.Points
 import           Diagrams.Prelude
 import           Diagrams.TwoD.Text
-import           Text.Html (Html, tr, concatHtml, th, (<<), valign, toHtml, (!), body, table, renderHtml, src, td, bgcolor)
-import qualified Text.Html as H
+import           Text.Html            (Html, bgcolor, body, concatHtml,
+                                       renderHtml, src, table, td, th, toHtml,
+                                       tr, valign, (!), (<<))
+import qualified Text.Html            as H
 
 -----------------------------------------------------------------------
 
