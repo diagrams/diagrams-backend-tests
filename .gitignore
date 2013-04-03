@@ -5,3 +5,4 @@ svg/*
 cairo/*
 postscript/*
 *-index.html
+.hsenv_*
