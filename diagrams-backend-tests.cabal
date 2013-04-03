@@ -38,7 +38,7 @@ Executable all-test
                        blaze-svg >= 0.3.3 && < 0.4,
                        bytestring >= 0.9  && < 0.11
      buildable: True
-   else 
+   else
      Build-depends:    base
      buildable:        False
    main-is:           All.hs
@@ -61,7 +61,7 @@ Executable cairo-test
                        diagrams-lib >= 0.6 && < 0.7,
                        diagrams-cairo >= 0.6 && < 0.7
      buildable: True
-   else 
+   else
      Build-depends:    base
      buildable: False
    main-is:           Cairo.hs
@@ -86,7 +86,7 @@ Executable svg-test
                        blaze-svg >= 0.3.3 && < 0.4,
                        bytestring >= 0.9 && < 0.10
      buildable: True
-   else 
+   else
      Build-depends:    base
      buildable: False
    main-is:           SVG.hs
@@ -108,7 +108,7 @@ Executable canvas-test
                        diagrams-core >= 0.6 && < 0.7,
                        diagrams-canvas >= 0.2 && < 0.3
      buildable: True
-   else 
+   else
      Build-depends:    base
      buildable: False
    main-is:           Canvas.hs
