@@ -6,3 +6,4 @@ cairo/*
 postscript/*
 *-index.html
 .hsenv_*
+dist_*
