@@ -9,6 +9,7 @@ module Diagrams.Tests
         , examples
         ) where
 
+import           Diagrams.Coordinates ((&))
 import           Diagrams.Core.Points
 import           Diagrams.Prelude
 import           Diagrams.TwoD.Text
