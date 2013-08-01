@@ -18,8 +18,8 @@ script:
   - cabal build
   - dist/build/all-test/all-test
 
-after_success:
-  - rsync -rcz cairo postscript svg ref all-index.html byorgey@projects.haskell.org:/srv/projects/diagrams/backend-tests
+# after_success:
+#   - rsync -rcz cairo postscript svg ref all-index.html byorgey@projects.haskell.org:/srv/projects/diagrams/backend-tests
 
 notifications:
   irc:
