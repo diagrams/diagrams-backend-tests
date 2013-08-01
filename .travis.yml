@@ -3,6 +3,7 @@ language: haskell
 install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq libcairo2-dev
+  - cabal install gtk2hs-buildtools
   - git clone --quiet git://github.com/diagrams/diagrams-core.git diagrams/core
   - git clone --quiet git://github.com/diagrams/diagrams-lib.git diagrams/lib
   - git clone --quiet git://github.com/diagrams/diagrams-svg.git diagrams/svg
