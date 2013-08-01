@@ -1,0 +1,29 @@
+language: haskell
+
+install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libcairo2-dev
+  - git clone --quiet git://github.com/diagrams/diagrams-core.git diagrams/core
+  - git clone --quiet git://github.com/diagrams/diagrams-lib.git diagrams/lib
+  - git clone --quiet git://github.com/diagrams/diagrams-svg.git diagrams/svg
+  - git clone --quiet git://github.com/diagrams/diagrams-cairo.git diagrams/cairo
+  - git clone --quiet git://github.com/diagrams/diagrams-postscript.git diagrams/postscript
+  - cd diagrams
+  - cabal install core/ lib/ svg/ cairo/ postscript/
+  - cd ..
+
+script:
+  - cabal configure -fall
+  - cabal build
+  - dist/build/all-test/all-test
+
+after_success:
+  - rsync -rcz cairo postscript svg ref all-index.html byorgey@projects.haskell.org:/srv/projects/diagrams/backend-tests
+
+notifications:
+  irc:
+    channels:
+      - irc.freenode.org#diagrams
+    skip_join: true
+    template:
+      - "\x0313backend-tests\x03/\x0306%{branch}\x03 \x0314%{commit}\x03 %{build_url} %{message}"
