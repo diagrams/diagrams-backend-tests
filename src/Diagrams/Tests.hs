@@ -190,6 +190,14 @@ examples =
 
         , Test "connect" $ connect_example
 
+        , Test "fill-line" $
+               strokeLine (fromVertices [origin, 0 & 2, 3 & 3, 4 & 1])
+                 # fc blue
+
+        , Test "fill-loop" $
+               strokeLoop (fromVertices [origin, 0 & 2, 3 & 3, 4 & 1] # closeLine)
+                 # fc blue
+
         ]
 
 poly_example = (poly1 ||| strutX 1 ||| poly2) # lw 0.05
