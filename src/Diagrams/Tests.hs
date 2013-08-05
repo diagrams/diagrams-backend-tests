@@ -201,9 +201,9 @@ examples =
         , Test "line-loop" $
                fc green $
                stroke $
-               trailLike ((fromVertices [origin, 0 & 2, 3 & 3, 4 & 1] # wrapLine) `at` origin)
-               <>
                trailLike ((fromVertices [origin, 0 & 2, 3 & 3, 4 & 1] # rotateBy (1/12) # closeLine # wrapLoop) `at` origin)
+               <>
+               trailLike ((fromVertices [origin, 0 & 2, 3 & 3, 4 & 1] # wrapLine) `at` origin)
 
         ]
 
