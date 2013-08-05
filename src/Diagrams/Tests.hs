@@ -198,6 +198,13 @@ examples =
                strokeLoop (fromVertices [origin, 0 & 2, 3 & 3, 4 & 1] # closeLine)
                  # fc blue
 
+        , Test "line-loop" $
+               fc green $
+               stroke $
+               trailLike ((fromVertices [origin, 0 & 2, 3 & 3, 4 & 1] # wrapLine) `at` origin)
+               <>
+               trailLike ((fromVertices [origin, 0 & 2, 3 & 3, 4 & 1] # rotateBy (1/12) # closeLine # wrapLoop) `at` origin)
+
         ]
 
 poly_example = (poly1 ||| strutX 1 ||| poly2) # lw 0.05
