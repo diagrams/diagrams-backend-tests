@@ -17,7 +17,7 @@ pdfTester =
           pdfOpts = PdfOptions (Dims 200 200)
       runPdf (name nm "pdf") (standardDocInfo { author=toPDFString "alpheccar", compressed = False}) docRect $ do
               page1 <- addPage Nothing
-              drawWithPage page1 $ renderDia' dig pdfOpts
+              drawWithPage page1 $ renderDia Pdf pdfOpts dig 
       rawSystem "convert" [name nm "pdf", name nm "png"]
       return $ H.image ! [ src (name nm "png") ]
   )
