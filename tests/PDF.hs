@@ -1,9 +1,9 @@
 module Main where
 
-import System.Directory
+import           System.Directory
 
-import Diagrams.Tests
-import Diagrams.Test.Pdf
+import           Diagrams.Test.PDF
+import           Diagrams.Tests
 
 main = do
    createDirectoryIfMissing False "pdf"

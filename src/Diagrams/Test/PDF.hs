@@ -1,13 +1,13 @@
-module Diagrams.Test.Pdf (pdfTester) where
+module Diagrams.Test.PDF (pdfTester) where
 
-import Diagrams.Backend.Pdf
-import Diagrams.Backend.Pdf.CmdLine
-import Diagrams.Prelude hiding ((<.>))
-import Diagrams.Tests
-import System.FilePath ((</>), (<.>))
-import System.Process
-import Text.Html as H hiding ((</>))
-import Graphics.PDF
+import           Diagrams.Backend.Pdf
+import           Diagrams.Backend.Pdf.CmdLine
+import           Diagrams.Prelude             hiding ((<.>))
+import           Diagrams.Tests
+import           Graphics.PDF
+import           System.FilePath              ((<.>), (</>))
+import           System.Process
+import           Text.Html                    as H hiding ((</>))
 
 pdfTester :: (String, Test -> IO Html)
 pdfTester =
@@ -17,7 +17,7 @@ pdfTester =
           pdfOpts = PdfOptions (Dims 200 200)
       runPdf (name nm "pdf") (standardDocInfo { author=toPDFString "alpheccar", compressed = False}) docRect $ do
               page1 <- addPage Nothing
-              drawWithPage page1 $ renderDia Pdf pdfOpts dig 
+              drawWithPage page1 $ renderDia Pdf pdfOpts dig
       rawSystem "convert" [name nm "pdf", name nm "png"]
       return $ H.image ! [ src (name nm "png") ]
   )
