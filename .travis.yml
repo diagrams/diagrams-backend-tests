@@ -9,8 +9,9 @@ install:
   - git clone --quiet git://github.com/diagrams/diagrams-svg.git diagrams/svg
   - git clone --quiet git://github.com/diagrams/diagrams-cairo.git diagrams/cairo
   - git clone --quiet git://github.com/diagrams/diagrams-postscript.git diagrams/postscript
+  - git clone --quiet git://github.com/alpheccar/diagrams-pdf.git diagrams/pdf
   - cd diagrams
-  - cabal install core/ lib/ svg/ cairo/ postscript/
+  - cabal install core/ lib/ svg/ cairo/ postscript/ pdf/
   - cd ..
 
 script:
