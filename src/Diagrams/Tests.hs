@@ -13,7 +13,7 @@ module Diagrams.Tests
 import           Data.Typeable
 import           Diagrams.Coordinates ((&))
 import           Diagrams.Core.Points
-import           Diagrams.Prelude
+import           Diagrams.Prelude hiding (connect)
 import           Diagrams.TwoD.Text
 import           Text.Html            (Html, bgcolor, body, concatHtml,
                                        renderHtml, src, table, td, th, toHtml,
@@ -173,6 +173,19 @@ examples =
                 # fc green
                 # lw 0.05
                 # clipBy (square 3.2 # rotateBy (1/10))
+        
+        , Test "clip-stacked" $
+            let p = stroke $ square 500 # alignBL
+                bg = p # fc blue
+                sq1 = p # fc green
+                sq2 = p # fc red 
+                        # opacity 0.5 
+                        # clipBy (square 200 # alignBL # translate (r2 (200, 100)))
+                sq3 = p # fc red 
+                        # clipBy (rect 250 100 # alignBL # translate (r2 (150, 350)))
+            in sq3
+            <> (sq2 <> sq1) # clipBy (square 200 # alignBL # translate (r2 (100, 200)))
+            <> bg
 
         , Test "alpha-color" $
 

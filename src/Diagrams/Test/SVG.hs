@@ -12,7 +12,7 @@ svgTester :: (String, Test -> IO Html)
 svgTester =
   ( "SVG"
   , \ (Test nm dig) -> do
-      let svg = renderDia SVG (SVGOptions (Dims 200 200)) dig
+      let svg = renderDia SVG (SVGOptions (Dims 200 200) Nothing) dig
       BS.writeFile (name nm) (renderSvg svg)
       return $ H.image ! [ src (name nm) ]
   )
