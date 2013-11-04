@@ -11,7 +11,6 @@ module Diagrams.Tests
         ) where
 
 import           Data.Typeable
-import           Diagrams.Coordinates ((&))
 import           Diagrams.Core.Points
 import           Diagrams.Prelude hiding (connect)
 import           Diagrams.TwoD.Text
@@ -99,7 +98,7 @@ examples =
                         , circle 1 # fc red
                         ]
         , Test "juxtaposing1" $
-                beside (20 & 30) (circle 1 # fc orange) (circle 1.5 # fc purple)
+                beside (20 ^& 30) (circle 1 # fc orange) (circle 1.5 # fc purple)
                         # showOrigin
         , Test "juxtaposing2" $
                 let d1 = circle 1 # fc red
@@ -114,8 +113,8 @@ examples =
                ) # lw 0.03
 
         , Test "line-attributes" $
-               let path = fromVertices [0 & 0, 1 & 0.3, 2 & 0, 2.2 & 0.3] # lw 0.1
-               in pad 1.1 . centerXY . vcat' with { sep = 0.1 }
+               let path = fromVertices [0 ^& 0, 1 ^& 0.3, 2 ^& 0, 2.2 ^& 0.3] # lw 0.1
+               in pad 1.1 . centerXY . vcat' (with & sep .~ 0.1)
                   $ map (path #)
                   [ lineCap LineCapButt   . lineJoin LineJoinMiter
                   , lineCap LineCapRound  . lineJoin LineJoinRound
@@ -173,15 +172,15 @@ examples =
                 # fc green
                 # lw 0.05
                 # clipBy (square 3.2 # rotateBy (1/10))
-        
+
         , Test "clip-stacked" $
             let p = stroke $ square 500 # alignBL
                 bg = p # fc blue
                 sq1 = p # fc green
-                sq2 = p # fc red 
-                        # opacity 0.5 
+                sq2 = p # fc red
+                        # opacity 0.5
                         # clipBy (square 200 # alignBL # translate (r2 (200, 100)))
-                sq3 = p # fc red 
+                sq3 = p # fc red
                         # clipBy (rect 250 100 # alignBL # translate (r2 (150, 350)))
             in sq3
             <> (sq2 <> sq1) # clipBy (square 200 # alignBL # translate (r2 (100, 200)))
@@ -190,13 +189,16 @@ examples =
         , Test "alpha-color" $
 
                let colors  = map (blue `withOpacity`) [0.1, 0.2 .. 1.0]
-               in  hcat' with { catMethod = Distrib, sep = 1 }
+               in  hcat' (with & catMethod .~ Distrib & sep .~ 1)
                      (zipWith fcA colors (repeat (circle 1)))
 
         , Test "opacity1" $
                let s c     = square 1 # fc c
                    reds    = (s darkred ||| s red) === (s pink ||| s indianred)
-               in  hcat' with { sep = 1 } . take 4 . iterate (opacity 0.7) $ reds
+               in  hcat' (with & sep .~ 1) . take 4 . iterate (opacity 0.7) $ reds
+
+        , Test "text-opacity" $ pad 1.1 . centerXY $
+               opacity 0.2 $ rect 8 1 # lw 0.2 <> text "hello"
 
         , Test "fat" $
                unitCircle # lw 0.3 # scaleX 2 # pad 1.3
@@ -204,28 +206,31 @@ examples =
         , Test "connect" $ connect_example
 
         , Test "fill-line" $
-               strokeLine (fromVertices [origin, 0 & 2, 3 & 3, 4 & 1])
+               strokeLine (fromVertices [origin, 0 ^& 2, 3 ^& 3, 4 ^& 1])
                  # fc blue
 
         , Test "fill-loop" $
-               strokeLoop (fromVertices [origin, 0 & 2, 3 & 3, 4 & 1] # closeLine)
+               strokeLoop (fromVertices [origin, 0 ^& 2, 3 ^& 3, 4 ^& 1] # closeLine)
                  # fc blue
 
         , Test "line-loop" $
                fc green $
                stroke $
-               trailLike ((fromVertices [origin, 0 & 2, 3 & 3, 4 & 1] # rotateBy (1/12) # closeLine # wrapLoop) `at` origin)
+               trailLike ((fromVertices [origin, 0 ^& 2, 3 ^& 3, 4 ^& 1] # rotateBy (1/12) # closeLine # wrapLoop) `at` origin)
                <>
-               trailLike ((fromVertices [origin, 0 & 2, 3 & 3, 4 & 1] # wrapLine) `at` origin)
+               trailLike ((fromVertices [origin, 0 ^& 2, 3 ^& 3, 4 ^& 1] # wrapLine) `at` origin)
 
         ]
 
 poly_example = (poly1 ||| strutX 1 ||| poly2) # lw 0.05
   where
-          poly1 = polygon with { polyType   = PolyRegular 13 5
-                               , polyOrient = OrientV }
-          poly2 = polygon with { polyType   = PolyPolar (repeat (1/40 :: CircleFrac))
-                                       (take 40 $ cycle [2,7,4,6]) }
+          poly1 = polygon (with & polyType   .~ PolyRegular 13 5
+                                & polyOrient .~ OrientV
+                          )
+          poly2 = polygon (with & polyType   .~ PolyPolar
+                                                  (repeat (1/40 :: Turn))
+                                                  (take 40 $ cycle [2,7,4,6])
+                          )
 
 data Corner = NW | NE | SW | SE
   deriving (Typeable, Eq, Ord, Show)
@@ -240,7 +245,7 @@ squares =  (s # named NW ||| s # named NE)
        === (s # named SW ||| s # named SE)
   where s = square 1 # lw 0.05
 
-d = hcat' with {sep = 0.5} (zipWith (|>) [0::Int ..] (replicate 5 squares))
+d = hcat' (with & sep .~ 0.5) (zipWith (|>) [0::Int ..] (replicate 5 squares))
 
 pairs = [ ((0::Int) .> NE, (2::Int) .> SW)
         , ((1::Int) .> SE, (4::Int) .> NE)
