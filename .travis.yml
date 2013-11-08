@@ -11,7 +11,8 @@ env:
     - CABALVER=1.18
     - UBUNTU_PKGS="libcairo2-dev"
     - EXTRA_DEPS_PRE="gtk2hs-buildtools"
-    - HEAD_DEPS="diagrams-core diagrams-lib diagrams-svg diagrams-cairo diagrams-postscript html"
+    - HEAD_DEPS="diagrams-core diagrams-lib diagrams-svg diagrams-cairo diagrams-postscript"
+    - EXTRA_DEPS="html"
 
 matrix:
   allow_failures:
