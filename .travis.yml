@@ -1,26 +1,30 @@
 language: haskell
 
-install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq libcairo2-dev
-  - cabal install gtk2hs-buildtools
-  - git clone --quiet git://github.com/diagrams/diagrams-core.git diagrams/core
-  - git clone --quiet git://github.com/diagrams/diagrams-lib.git diagrams/lib
-  - git clone --quiet git://github.com/diagrams/diagrams-svg.git diagrams/svg
-  - git clone --quiet git://github.com/diagrams/diagrams-cairo.git diagrams/cairo
-  - git clone --quiet git://github.com/diagrams/diagrams-postscript.git diagrams/postscript
-  - git clone --quiet git://github.com/alpheccar/diagrams-pdf.git diagrams/pdf
-  - cd diagrams
-  - cabal install core/ lib/ svg/ cairo/ postscript/ pdf/
-  - cd ..
+env:
+  matrix:
+    - HPVER=2012.4.0.0
+    - HPVER=2013.2.0.0
+    - GHCVER=7.4.2
+    - GHCVER=7.6.3
+    - GHCVER=head
+  global:
+    - CABALVER=1.18
+    - UBUNTU_PKGS="libcairo2-dev"
+    - EXTRA_DEPS_PRE="gtk2hs-buildtools"
+    - HEAD_DEPS="diagrams-core diagrams-lib diagrams-svg diagrams-cairo diagrams-postscript"
 
-script:
-  - cabal configure -fall
-  - cabal build
-  - dist/build/all-test/all-test
+matrix:
+  allow_failures:
+    - env: GHCVER=head
 
-# after_success:
-#   - rsync -rcz cairo postscript svg ref all-index.html byorgey@projects.haskell.org:/srv/projects/diagrams/backend-tests
+before_install:
+  - git clone http://github.com/diagrams/diagrams-travis travis
+  - source travis/scripts/set_env.sh
+  - ./travis/scripts/before_install.sh
+
+install: ./travis/scripts/install.sh
+
+script: cabal configure -fsvg -fcairo -fpostscript && cabal build && dist/build/svg-test/svg-test && dist/build/cairo-test/cairo-test && dist/build/postscript-test/postscript-test
 
 notifications:
   email: false
