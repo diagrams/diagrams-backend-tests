@@ -11,7 +11,7 @@ env:
     - CABALVER=1.18
     - UBUNTU_PKGS="libcairo2-dev"
     - EXTRA_DEPS_PRE="gtk2hs-buildtools"
-    - HEAD_DEPS="diagrams-core diagrams-lib diagrams-svg diagrams-cairo diagrams-postscript"
+    - HEAD_DEPS="diagrams-core diagrams-lib diagrams-svg diagrams-cairo diagrams-postscript html"
 
 matrix:
   allow_failures:
@@ -24,7 +24,7 @@ before_install:
 
 install: ./travis/scripts/install.sh
 
-script: cabal configure -fsvg -fcairo -fpostscript && cabal build && dist/build/svg-test/svg-test && dist/build/cairo-test/cairo-test && dist/build/postscript-test/postscript-test
+script: cabal configure -fall && cabal build && dist/build/all-test/all-test
 
 notifications:
   email: false
