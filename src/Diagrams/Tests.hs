@@ -12,7 +12,7 @@ module Diagrams.Tests
 
 import           Data.Typeable
 import           Diagrams.Core.Points
-import           Diagrams.Prelude hiding (connect)
+import           Diagrams.Prelude     hiding (connect)
 import           Diagrams.TwoD.Text
 import           Text.Html            (Html, bgcolor, body, concatHtml,
                                        renderHtml, src, table, td, th, toHtml,
