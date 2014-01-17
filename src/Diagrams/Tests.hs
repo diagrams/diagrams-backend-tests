@@ -76,7 +76,7 @@ examples =
         , Test "ellipse" $
                 unitCircle # scaleX 0.5 # rotateBy (1/6)
         , Test "arc" $
-                arc (tau/4 :: Rad) (4 * tau / 7 :: Rad)
+                arc (tau/4 @@ rad) (4 * tau / 7 @@ rad)
         , Test "Pre-defined-shapes" $
                 square 1 ||| rect 0.3 0.5 ||| eqTriangle 1 ||| roundedRect 0.7 0.4 0.1
         , Test "circle-hrule-circle" $
@@ -228,7 +228,7 @@ poly_example = (poly1 ||| strutX 1 ||| poly2) # lw 0.05
                                 & polyOrient .~ OrientV
                           )
           poly2 = polygon (with & polyType   .~ PolyPolar
-                                                  (repeat (1/40 :: Turn))
+                                                  (repeat (1/40 @@ turn))
                                                   (take 40 $ cycle [2,7,4,6])
                           )
 
