@@ -224,6 +224,9 @@ examples =
                triangle 1   # fc green # rotateBy (1/5)
                <>
                square   1.2 # fc white # lw 0
+
+        , Test "triangle-bez-miter" $
+               triangle 1 # onSegments
         ]
 
 poly_example = (poly1 ||| strutX 1 ||| poly2) # lw 0.05
