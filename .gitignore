@@ -9,3 +9,5 @@ pdf/*
 .hsenv_*
 dist_*
 TAGS
+.cabal-sandbox
+cabal.sandbox.config
