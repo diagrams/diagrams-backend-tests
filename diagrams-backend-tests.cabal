@@ -104,7 +104,7 @@ Executable pdf-test
      Build-depends:    base >= 4.6 && < 4.8,
                        mtl >= 2.1 && < 2.2 ,
                        monoid-extras >= 0.3 && < 0.4,
-                       semigroups >= 0.9.2 && < 0.12,
+                       semigroups >= 0.9.2 && < 0.14,
                        HPDF >= 1.4.5 && < 1.5,
                        vector-space >= 0.8.6 && < 0.9,
                        diagrams-lib >= 0.7 && < 1.2,

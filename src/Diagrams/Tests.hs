@@ -107,19 +107,14 @@ examples =
                                                    ===
                                                    d2  )
 
-        , Test "freeze" $
-               (square 1 ||| square 1 # freeze # scale 2
-                         ||| circle 1 # freeze # scaleX 3
-               ) # lw 0.03
-
         , Test "line-attributes" $
-               let path = fromVertices [0 ^& 0, 1 ^& 0.3, 2 ^& 0, 2.2 ^& 0.3] # lw 0.1
+               let path = fromVertices [0 ^& 0, 1 ^& 0.3, 2 ^& 0, 2.2 ^& 0.3] # lw ultraThick
                in pad 1.1 . centerXY . vcat' (with & sep .~ 0.1)
                   $ map (path #)
                   [ lineCap LineCapButt   . lineJoin LineJoinMiter
                   , lineCap LineCapRound  . lineJoin LineJoinRound
                   , lineCap LineCapSquare . lineJoin LineJoinBevel
-                  , dashing [0.1,0.2,0.3,0.1] 0
+                  , dashingG [0.1,0.2,0.3,0.1] 0
                   ]
 
         , Test "text-basic" $
@@ -137,14 +132,14 @@ examples =
                in  t1 =/= t2 =/= t3
 
         , Test "text-attributes" $
-               let text' s t = text t # fontSize s <> strutY (s * 1.3)
+               let text' s t = text t # fontSize (Local s) <> strutY (s * 1.3)
                in pad 1.1 . centerXY $
                     text' 10 "Hello" # italic
                     === text' 5 "there"  # bold # font "freeserif"
                     === text' 3 "world"  # fc green
 
         , Test "text-transforms" $
-               let eff = text "F" <> square 1 # lw 0
+               let eff = text "F" <> square 1 # lw none
                    ts  = [ scale (1/2), id, scale 2, scaleX 2, scaleY 2
                          , scale (-1), scaleX (-1), scaleY (-1)
                          ]
@@ -170,7 +165,6 @@ examples =
         , Test "clip" $
                 square 3
                 # fc green
-                # lw 0.05
                 # clipBy (square 3.2 # rotateBy (1/10))
 
         , Test "clip-stacked" $
@@ -198,10 +192,10 @@ examples =
                in  hcat' (with & sep .~ 1) . take 4 . iterate (opacity 0.7) $ reds
 
         , Test "text-opacity" $ pad 1.1 . centerXY $
-               opacity 0.2 $ rect 8 1 # lw 0.2 <> text "hello"
+               opacity 0.2 $ rect 8 1 # lw (Local 0.2) <> text "hello"
 
         , Test "fat" $
-               unitCircle # lw 0.3 # scaleX 2 # pad 1.3
+               unitCircle # lw (Local 0.2) # scaleX 2 # pad 1.3
 
         , Test "connect" $ connect_example
 
@@ -223,10 +217,10 @@ examples =
         , Test "triangle-miter" $
                triangle 1   # fc green # rotateBy (1/5)
                <>
-               square   1.2 # fc white # lw 0
+               square   1.2 # fc white # lw none
         ]
 
-poly_example = (poly1 ||| strutX 1 ||| poly2) # lw 0.05
+poly_example = (poly1 ||| strutX 1 ||| poly2)
   where
           poly1 = polygon (with & polyType   .~ PolyRegular 13 5
                                 & polyOrient .~ OrientV
@@ -243,11 +237,11 @@ instance IsName Corner
 connect n1 n2
   = withName n1 $ \b1 ->
     withName n2 $ \b2 ->
-      atop ((location b1 ~~ location b2) # lc red # lw 0.05)
+      atop ((location b1 ~~ location b2) # lc red)
 
 squares =  (s # named NW ||| s # named NE)
        === (s # named SW ||| s # named SE)
-  where s = square 1 # lw 0.05
+  where s = square 1
 
 d = hcat' (with & sep .~ 0.5) (zipWith (|>) [0::Int ..] (replicate 5 squares))
 
