@@ -219,6 +219,10 @@ examples =
                triangle 1   # fc green # rotateBy (1/5)
                <>
                square   1.2 # fc white # lwG 0
+
+        , Test "linear-gradient" $ linearGradient_example
+
+        , Test "radial-gradient" $ radialGradient_example
         ]
 
 poly_example = (poly1 ||| strutX 1 ||| poly2) # lwG 0.05
@@ -253,3 +257,31 @@ pairs = [ ((0::Int) .> NE, (2::Int) .> SW)
         ]
 
 connect_example = d # applyAll (map (uncurry connect) pairs)
+
+linearGradient_example = lg
+  where
+    stops = mkStops [(red, 0, 1), (white, 0.5, 1), (gold, 1, 1)]
+    gradient = mkLinearGradient stops ((-0.5) ^& 0) (0.5 ^& 0) GradPad
+    sq1 = square 1 # fillTexture  gradient
+    sq2 = square 1 # fillTexture (gradient & _LG . lGradSpreadMethod .~ GradRepeat
+                                          & _LG . lGradStart .~ (-0.1) ^& 0
+                                          & _LG . lGradEnd .~ 0.1 ^& 0)
+    sq3 = square 1 # fillTexture (gradient & _LG . lGradSpreadMethod .~ GradReflect
+                                          & _LG . lGradStart .~ (-0.1) ^& 0
+                                          & _LG . lGradEnd .~ 0.1 ^& 0)
+    lg = hcat' (with & sep .~ 0.25) [sq1, sq2, sq3]
+
+
+radialGradient_example = rg
+  where
+    gradient = mkRadialGradient (mkStops [(gray,0,1), (purple,1,1)])
+                         (0 ^& 0) 0.1 (0 ^& 0) 0.5
+                         GradPad
+    sq1 = square 1 # fillTexture  gradient
+    sq2 = square 1 # fillTexture (gradient & _RG . rGradSpreadMethod .~ GradRepeat
+                                           & _RG . rGradRadius0 .~ 0.1
+                                           & _RG . rGradRadius1 .~ 0.3)
+    sq3 = square 1 # fillTexture (gradient & _RG . rGradSpreadMethod .~ GradReflect
+                                          & _RG . rGradRadius0 .~ 0.1
+                                           & _RG . rGradRadius1 .~ 0.2)
+    rg = hcat' (with & sep .~ 0.25) [sq1, sq2, sq3]
