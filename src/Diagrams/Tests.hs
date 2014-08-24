@@ -76,7 +76,7 @@ examples =
         , Test "ellipse" $
                 unitCircle # scaleX 0.5 # rotateBy (1/6)
         , Test "arc" $
-                arc (tau/4 @@ rad) (4 * tau / 7 @@ rad)
+                arc (xDir # rotate (tau/4 @@ rad)) (9 * tau / 28 @@ rad)
         , Test "Pre-defined-shapes" $
                 square 1 ||| rect 0.3 0.5 ||| eqTriangle 1 ||| roundedRect 0.7 0.4 0.1
         , Test "circle-hrule-circle" $
