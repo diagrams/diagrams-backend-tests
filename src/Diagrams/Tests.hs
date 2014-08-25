@@ -6,6 +6,7 @@
 
 module Diagrams.Tests
         ( Test(..)
+        , figure, figCaption
         , runTests
         , examples
         ) where
@@ -32,6 +33,12 @@ data Test = Test
 
 -----------------------------------------------------------------------
 
+figure :: Html -> Html
+figure = H.tag "FIGURE"
+
+figCaption :: Html -> Html
+figCaption = H.tag "FIGCAPTION"
+
 -- | 'runTests' generates an HTML page which contains the executed
 --   tests.  You need to provide the tests to run (typically
 --   'examples'), the name of the file to generate, and a list of
@@ -50,7 +57,7 @@ runTests tests name backends = do
                             map ((th <<) . (++ " output")) backendNames
         result_rows <- sequence
                 [ do testHtmls <- mapM ($t) execs
-                     let golden = H.image ! [src ("ref/" ++ nm ++ ".png")]
+                     let golden = figure $ H.image ! [src ("ref/" ++ nm ++ ".png")]
                      return . tr . concatHtml $
                        [ td ! [valign "top", bgcolor "#eeeeee"]  $ toHtml nm
                        , td ! [valign "top"] $ golden
