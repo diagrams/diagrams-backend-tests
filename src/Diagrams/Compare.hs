@@ -57,13 +57,3 @@ sameImageType (ImageCMYK8 _)  (ImageCMYK8 _)  = True
 sameImageType (ImageCMYK16 _) (ImageCMYK16 _) = True
 sameImageType _               _               = False
 
--- main = do 
-  -- di1 <- readImage "./orangeR.png"
-  -- di2 <- readImage "./orangeC.png"
-  -- let (m,p) = case (di1, di2) of
-               -- (Left _, _) -> error "Image 1 not read"
-               -- (_, Left _) -> error "Image 2 not read"
-               -- (Right  i1, Right i2) -> compareImages i1 i2
-  -- print m
-  -- print p
-

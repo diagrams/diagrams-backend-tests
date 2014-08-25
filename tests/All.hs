@@ -8,9 +8,9 @@ import           Diagrams.Tests
 import           System.Directory
 
 main = do
-   createDirectoryIfMissing False "svg"
+   -- createDirectoryIfMissing False "svg"
    createDirectoryIfMissing False "cairo"
-   createDirectoryIfMissing False "postscript"
+   -- createDirectoryIfMissing False "postscript"
    createDirectoryIfMissing False "rasterific"
 
-   runTests examples "all-index.html" $ [cairoTester, svgTester, postscriptTester, rasterificTester]
+   runTests examples "all-index.html" $ [cairoTester, {- svgTester, postscriptTester, -} rasterificTester]
