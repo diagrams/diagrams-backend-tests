@@ -1,7 +1,7 @@
 module Diagrams.Test.Postscript (postscriptTester) where
 
-import Codec.Picture (readImage, DynamicImage(..))
-import Codec.Picture.Types (promoteImage)
+import Codec.Picture (readImage, DynamicImage(..), Image(..), PixelRGBA8)
+import Codec.Picture.Types (dropAlphaLayer, promoteImage)
 import Diagrams.Compare
 import Diagrams.Backend.Postscript
 import Diagrams.Prelude hiding ((<.>))
@@ -28,10 +28,11 @@ postscriptTester =
       let (m,p) = case (ref, img) of
             (Left _, _) -> error "Image 1 not read"
             (_, Left _) -> error "Image 2 not read"
-            -- If either image does not have an alpha layer then add one.
-            (Right  i1, Right i2) -> compareImages (addAlpha i1) (addAlpha i2)
-          addAlpha img= case img of
-            ImageRGB8 i -> ImageRGBA8 $ promoteImage i
+            -- Make both images RGB8.
+            (Right  i1, Right i2) -> compareImages (syncImgage i1) (syncImgage i2)
+          syncImgage img = case img of
+            ImageRGBA8 i -> ImageRGB8 $ dropAlphaLayer i
+            ImageYA8 i   -> ya82rgb8 i
             otherwise -> img
           -- figure and figCaption are new to Html5 and are implemented
           -- in Diagrams.Tests.
@@ -44,3 +45,7 @@ postscriptTester =
  where
   name nm ext = prefix </> nm <.> ext
   prefix = "postscript"
+  ya82rgb8 ya8 = ImageRGB8 img
+    where
+      img  = dropAlphaLayer img'
+      img' = promoteImage ya8 :: (Image PixelRGBA8)
