@@ -28,9 +28,8 @@ postscriptTester =
       let (m,p) = case (ref, img) of
             (Left _, _) -> error "Image 1 not read"
             (_, Left _) -> error "Image 2 not read"
-            -- All rasterific pngs have an alpha channel. If the
-            -- reference image does not then we add one.
-            (Right  i1, Right i2) -> compareImages (addAlpha i1) i2
+            -- If either image does not have an alpha layer then add one.
+            (Right  i1, Right i2) -> compareImages (addAlpha i1) (addAlpha i2)
           addAlpha img= case img of
             ImageRGB8 i -> ImageRGBA8 $ promoteImage i
             otherwise -> img

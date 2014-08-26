@@ -14,7 +14,7 @@ svgTester =
   , \ (Test nm dig) -> do
       let svg = renderDia SVG (SVGOptions (Dims 200 200) Nothing) dig
       BS.writeFile (name nm) (renderSvg svg)
-      return $ H.image ! [ src (name nm) ]
+      return $ figure $ H.image ! [ src (name nm) ]
   )
  where
   name nm = prefix </> nm <.> "svg"
