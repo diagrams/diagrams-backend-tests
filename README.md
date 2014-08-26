@@ -1,5 +1,4 @@
 Backend Tests
-Backend Tests
 =============
 
 This is a simple test framework for diagrams.
