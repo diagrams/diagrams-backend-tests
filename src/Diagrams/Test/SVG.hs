@@ -19,7 +19,7 @@ svgTester =
   , \ (Test nm dig) -> do
       let svg = renderDia SVG (SVGOptions (Dims 200 200) Nothing) dig
       BS.writeFile (name nm "svg") (renderSvg svg)
-      rawSystem "convert" [name nm "svg", name nm "png32"]
+      rawSystem "convert" ["-background", "none", name nm "svg", name nm "png32"]
       -- The generated image.
       img <- readImage $ name nm "png32"
       -- The reference image.
@@ -28,9 +28,10 @@ svgTester =
       let (m,p) = case (ref, img) of
             (Left _, _) -> error "Image 1 not read"
             (_, Left _) -> error "Image 2 not read"
-            (Right  i1, Right i2) -> compareImages (addAlpha i1) (addAlpha i2)
+            (Right  i1, Right i2) -> compareImages (addAlpha i1) i2
           addAlpha img= case img of
             ImageRGB8 i -> ImageRGBA8 $ promoteImage i
+            ImageYA8 i  -> ImageRGBA8 $ promoteImage i
             otherwise -> img
           -- figure and figCaption are new to Html5 and are implemented
           -- in Diagrams.Tests.
