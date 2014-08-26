@@ -39,7 +39,6 @@ Executable all-test
                        blaze-svg >= 0.3.3 && < 0.4,
                        bytestring >= 0.9  && < 0.11,
                        Rasterific >= 0.2 && < 0.4,
-                       FontyFruity >= 0.2 && < 0.4,
                        JuicyPixels >= 3.1.6 && < 3.2,
                        vector >= 0.10.10 && < 0.11  
      buildable: True
@@ -65,7 +64,6 @@ Executable cairo-test
                        diagrams-core >= 1.0 && < 1.3,
                        diagrams-lib >= 1.0 && < 1.3,
                        diagrams-cairo >= 1.0 && < 1.3,
-                       FontyFruity >= 0.2 && < 0.4,
                        JuicyPixels >= 3.1.6 && < 3.2,
                        vector >= 0.10.10 && < 0.11  
      buildable: True
@@ -93,7 +91,6 @@ Executable svg-test
                        diagrams-svg >= 1.0 && < 1.2,
                        blaze-svg >= 0.3.3 && < 0.4,
                        bytestring >= 0.9 && < 0.11,
-                       FontyFruity >= 0.2 && < 0.4,
                        JuicyPixels >= 3.1.6 && < 3.2,
                        vector >= 0.10.10 && < 0.11  
      buildable: True
@@ -204,7 +201,6 @@ Executable postscript-test
                        diagrams-lib >= 1.0 && < 1.2,
                        diagrams-core >= 1.0 && < 1.1,
                        diagrams-postscript >= 1.0 && < 1.1,
-                       FontyFruity >= 0.2 && < 0.4,
                        JuicyPixels >= 3.1.6 && < 3.2,
                        vector >= 0.10.10 && < 0.11  
      buildable: True
