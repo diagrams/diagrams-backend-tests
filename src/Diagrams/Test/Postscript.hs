@@ -18,10 +18,10 @@ postscriptTester =
       renderDia Postscript
         (PostscriptOptions (name nm "eps") (Dims 200 200) EPS)
         dig
-      rawSystem "epstopdf" [name nm "eps"]
-      rawSystem "convert" [name nm "pdf", name nm "png"]
+--      rawSystem "epstopdf" [name nm "eps"]
+      rawSystem "convert" ["-alpha", "on", name nm "eps", name nm "png32"]
       -- The generated image.
-      img <- readImage $ name nm "png"
+      img <- readImage $ name nm "png32"
       -- The reference image.
       ref <- readImage $ "ref/" ++ nm ++ ".png"
       -- m: is mean squared error, p: is peak signal to noise ration.
@@ -29,10 +29,10 @@ postscriptTester =
             (Left _, _) -> error "Image 1 not read"
             (_, Left _) -> error "Image 2 not read"
             -- Make both images RGB8.
-            (Right  i1, Right i2) -> compareImages (syncImgage i1) (syncImgage i2)
-          syncImgage img = case img of
-            ImageRGBA8 i -> ImageRGB8 $ dropAlphaLayer i
-            ImageYA8 i   -> ya82rgb8 i
+            (Right  i1, Right i2) -> compareImages (syncImage i1) (syncImage i2)
+          syncImage img = case img of
+            ImageRGB8 i -> ImageRGBA8 $ promoteImage i
+            ImageYA8 i  -> ImageRGBA8 $ promoteImage i
             otherwise -> img
           -- figure and figCaption are new to Html5 and are implemented
           -- in Diagrams.Tests.
@@ -45,7 +45,3 @@ postscriptTester =
  where
   name nm ext = prefix </> nm <.> ext
   prefix = "postscript"
-  ya82rgb8 ya8 = ImageRGB8 img
-    where
-      img  = dropAlphaLayer img'
-      img' = promoteImage ya8 :: (Image PixelRGBA8)

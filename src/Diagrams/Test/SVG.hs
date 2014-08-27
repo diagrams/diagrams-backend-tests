@@ -31,7 +31,6 @@ svgTester =
             (Right  i1, Right i2) -> compareImages (addAlpha i1) i2
           addAlpha img= case img of
             ImageRGB8 i -> ImageRGBA8 $ promoteImage i
-            ImageYA8 i  -> ImageRGBA8 $ promoteImage i
             otherwise -> img
           -- figure and figCaption are new to Html5 and are implemented
           -- in Diagrams.Tests.
