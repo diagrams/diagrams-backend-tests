@@ -11,7 +11,7 @@ import System.Process
 import Text.Html as H hiding ((</>))
 import Text.Printf (printf)
 
-postscriptTester :: (String, Test Double -> IO Html)
+postscriptTester :: (String, Test -> IO Html)
 postscriptTester =
   ( "postscript"
   , \ (Test nm dig) -> do

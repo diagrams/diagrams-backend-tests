@@ -11,7 +11,7 @@ import System.FilePath ((</>),(<.>))
 import Text.Html as H hiding ((</>))
 import Text.Printf (printf)
 
-cairoTester :: (String, Test Double -> IO Html)
+cairoTester :: (String, Test -> IO Html)
 cairoTester =
   ( "cairo"
   , \ (Test nm dig) -> do

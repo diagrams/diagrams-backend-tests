@@ -13,7 +13,7 @@ import           Text.Blaze.Svg.Renderer.Utf8 (renderSvg)
 import           Text.Html as H hiding ((</>))
 import           Text.Printf (printf)
 
-svgTester :: (String, Test Double -> IO Html)
+svgTester :: (String, Test -> IO Html)
 svgTester =
   ( "SVG"
   , \ (Test nm dig) -> do

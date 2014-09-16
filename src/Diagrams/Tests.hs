@@ -22,13 +22,13 @@ import qualified Text.Html            as H
 
 -----------------------------------------------------------------------
 
-data Test n = Test
+data Test = Test
         String -- ^ the name of the test
         (forall canvas .
-                ( Renderable (Path V2 n) canvas
-                , Renderable (Text n) canvas
-                , Backend canvas V2 n
-                ) => Diagram canvas V2 n
+                ( Renderable (Path R2) canvas
+                , Renderable Text      canvas
+                , Backend canvas R2
+                ) => Diagram canvas R2
         ) -- ^ and the diagram
 
 -----------------------------------------------------------------------
@@ -46,7 +46,7 @@ figCaption = H.tag "FIGCAPTION"
 --   a method for creating an HTML fragment that displays the
 --   generated image.
 
-runTests ::  [Test n] -> String -> [(String, Test n -> IO Html)] -> IO ()
+runTests ::  [Test] -> String -> [(String, Test -> IO Html)] -> IO ()
 runTests tests name backends = do
         let (backendNames, execs) = unzip backends
             header = tr . concatHtml $
@@ -72,7 +72,7 @@ runTests tests name backends = do
         writeFile name $ renderHtml doc
 
 -- ^ list of cannonical examples.
-examples :: DataFloat n => [Test n]
+examples :: [Test]
 examples =
         [ Test "square1" $ square 1
         , Test "circle1" $ circle 1
@@ -154,7 +154,8 @@ examples =
                in  pad 1.1 . hcat . map (eff #) $ ts
 
         , Test "ring" $
-               let ring = asPath $ circle 3 <> circle 2
+               let ring :: Path R2
+                   ring = circle 3 <> circle 2
 
                in  stroke ring # fc purple # fillRule EvenOdd # pad 1.1
 
@@ -226,13 +227,10 @@ examples =
                <>
                square   1.2 # fc white # lwG 0
 
-        , Test "linear-gradient" linearGradient_example
+        , Test "linear-gradient" $ linearGradient_example
 
-        , Test "radial-gradient" radialGradient_example
+        , Test "radial-gradient" $ radialGradient_example
         ]
-
-asPath :: Path v n -> Path v n
-asPath = id
 
 poly_example = (poly1 ||| strutX 1 ||| poly2) # lwG 0.05
   where
@@ -273,11 +271,11 @@ linearGradient_example = lg
     gradient = mkLinearGradient stops ((-0.5) ^& 0) (0.5 ^& 0) GradPad
     sq1 = square 1 # fillTexture  gradient
     sq2 = square 1 # fillTexture (gradient & _LG . lGradSpreadMethod .~ GradRepeat
-                                           & _LG . lGradStart        .~ (-0.1) ^& 0
-                                           & _LG . lGradEnd          .~ 0.1 ^& 0)
+                                          & _LG . lGradStart .~ (-0.1) ^& 0
+                                          & _LG . lGradEnd .~ 0.1 ^& 0)
     sq3 = square 1 # fillTexture (gradient & _LG . lGradSpreadMethod .~ GradReflect
-                                           & _LG . lGradStart        .~ (-0.1) ^& 0
-                                           & _LG . lGradEnd          .~ 0.1 ^& 0)
+                                          & _LG . lGradStart .~ (-0.1) ^& 0
+                                          & _LG . lGradEnd .~ 0.1 ^& 0)
     lg = hcat' (with & sep .~ 0.25) [sq1, sq2, sq3]
 
 
@@ -291,7 +289,6 @@ radialGradient_example = rg
                                            & _RG . rGradRadius0 .~ 0.1
                                            & _RG . rGradRadius1 .~ 0.3)
     sq3 = square 1 # fillTexture (gradient & _RG . rGradSpreadMethod .~ GradReflect
-                                           & _RG . rGradRadius0 .~ 0.1
+                                          & _RG . rGradRadius0 .~ 0.1
                                            & _RG . rGradRadius1 .~ 0.2)
     rg = hcat' (with & sep .~ 0.25) [sq1, sq2, sq3]
-
