@@ -14,7 +14,7 @@ main = do
   createDirectoryIfMissing False "pgf"
   runTests examples "pgf-index.html" [pgfTester]
 
-tests :: IO [(String, Test -> IO Html)]
+tests :: IO [(String, Test Double -> IO Html)]
 tests = do
   args <- concatMap (mapMaybe parseChar) <$> getArgs
 
@@ -22,7 +22,7 @@ tests = do
              then [pgfTester]
              else args
 
-parseChar :: Char -> Maybe (String, Test -> IO Html)
+parseChar :: Char -> Maybe (String, Test Double -> IO Html)
 parseChar 'p' = Just $ pgfTester' plaintexSurface
 parseChar 'l' = Just $ pgfTester' latexSurface
 parseChar 'c' = Just $ pgfTester' contextSurface

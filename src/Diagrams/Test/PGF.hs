@@ -13,7 +13,7 @@ import           System.Process
 import           Text.Html            as H hiding ((</>))
 import           Text.Printf
 
-pgfTester' :: Surface -> (String, Test -> IO Html)
+pgfTester' :: Surface -> (String, Test Double -> IO Html)
 pgfTester' surf =
   ( "pgf - " ++ _command surf
   , \ (Test nm d) -> do

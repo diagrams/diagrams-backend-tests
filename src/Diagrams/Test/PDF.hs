@@ -9,7 +9,7 @@ import           System.FilePath              ((<.>), (</>))
 import           System.Process
 import           Text.Html                    as H hiding ((</>))
 
-pdfTester :: (String, Test -> IO Html)
+pdfTester :: (String, Test Double -> IO Html)
 pdfTester =
   ( "pdf"
   , \ (Test nm dig) -> do

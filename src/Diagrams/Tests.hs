@@ -22,13 +22,13 @@ import qualified Text.Html            as H
 
 -----------------------------------------------------------------------
 
-data Test = Test
+data Test n = Test
         String -- ^ the name of the test
         (forall canvas .
-                ( Renderable (Path V2 Double) canvas
-                , Renderable (Text Double) canvas
-                , Backend canvas V2 Double
-                ) => Diagram canvas V2 Double
+                ( Renderable (Path V2 n) canvas
+                , Renderable (Text n) canvas
+                , Backend canvas V2 n
+                ) => Diagram canvas V2 n
         ) -- ^ and the diagram
 
 -----------------------------------------------------------------------
@@ -46,7 +46,7 @@ figCaption = H.tag "FIGCAPTION"
 --   a method for creating an HTML fragment that displays the
 --   generated image.
 
-runTests ::  [Test] -> String -> [(String, Test -> IO Html)] -> IO ()
+runTests ::  [Test n] -> String -> [(String, Test n -> IO Html)] -> IO ()
 runTests tests name backends = do
         let (backendNames, execs) = unzip backends
             header = tr . concatHtml $
@@ -72,7 +72,7 @@ runTests tests name backends = do
         writeFile name $ renderHtml doc
 
 -- ^ list of cannonical examples.
-examples :: [Test]
+examples :: DataFloat n => [Test n]
 examples =
         [ Test "square1" $ square 1
         , Test "circle1" $ circle 1
@@ -154,8 +154,7 @@ examples =
                in  pad 1.1 . hcat . map (eff #) $ ts
 
         , Test "ring" $
-               let ring :: Path V2 Double
-                   ring = circle 3 <> circle 2
+               let ring = asPath $ circle 3 <> circle 2
 
                in  stroke ring # fc purple # fillRule EvenOdd # pad 1.1
 
@@ -227,10 +226,13 @@ examples =
                <>
                square   1.2 # fc white # lwG 0
 
-        , Test "linear-gradient" $ linearGradient_example
+        , Test "linear-gradient" linearGradient_example
 
-        , Test "radial-gradient" $ radialGradient_example
+        , Test "radial-gradient" radialGradient_example
         ]
+
+asPath :: Path v n -> Path v n
+asPath = id
 
 poly_example = (poly1 ||| strutX 1 ||| poly2) # lwG 0.05
   where
