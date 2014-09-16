@@ -25,10 +25,10 @@ import qualified Text.Html            as H
 data Test = Test
         String -- ^ the name of the test
         (forall canvas .
-                ( Renderable (Path R2) canvas
-                , Renderable Text      canvas
-                , Backend canvas R2
-                ) => Diagram canvas R2
+                ( Renderable (Path V2 Double) canvas
+                , Renderable (Text Double) canvas
+                , Backend canvas V2 Double
+                ) => Diagram canvas V2 Double
         ) -- ^ and the diagram
 
 -----------------------------------------------------------------------
@@ -154,7 +154,7 @@ examples =
                in  pad 1.1 . hcat . map (eff #) $ ts
 
         , Test "ring" $
-               let ring :: Path R2
+               let ring :: Path V2 Double
                    ring = circle 3 <> circle 2
 
                in  stroke ring # fc purple # fillRule EvenOdd # pad 1.1
@@ -271,11 +271,11 @@ linearGradient_example = lg
     gradient = mkLinearGradient stops ((-0.5) ^& 0) (0.5 ^& 0) GradPad
     sq1 = square 1 # fillTexture  gradient
     sq2 = square 1 # fillTexture (gradient & _LG . lGradSpreadMethod .~ GradRepeat
-                                          & _LG . lGradStart .~ (-0.1) ^& 0
-                                          & _LG . lGradEnd .~ 0.1 ^& 0)
+                                           & _LG . lGradStart        .~ (-0.1) ^& 0
+                                           & _LG . lGradEnd          .~ 0.1 ^& 0)
     sq3 = square 1 # fillTexture (gradient & _LG . lGradSpreadMethod .~ GradReflect
-                                          & _LG . lGradStart .~ (-0.1) ^& 0
-                                          & _LG . lGradEnd .~ 0.1 ^& 0)
+                                           & _LG . lGradStart        .~ (-0.1) ^& 0
+                                           & _LG . lGradEnd          .~ 0.1 ^& 0)
     lg = hcat' (with & sep .~ 0.25) [sq1, sq2, sq3]
 
 
@@ -289,6 +289,7 @@ radialGradient_example = rg
                                            & _RG . rGradRadius0 .~ 0.1
                                            & _RG . rGradRadius1 .~ 0.3)
     sq3 = square 1 # fillTexture (gradient & _RG . rGradSpreadMethod .~ GradReflect
-                                          & _RG . rGradRadius0 .~ 0.1
+                                           & _RG . rGradRadius0 .~ 0.1
                                            & _RG . rGradRadius1 .~ 0.2)
     rg = hcat' (with & sep .~ 0.25) [sq1, sq2, sq3]
+
