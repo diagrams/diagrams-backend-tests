@@ -17,7 +17,7 @@ pgfTester' :: Surface -> (String, Test Double -> IO Html)
 pgfTester' surf =
   ( "pgf - " ++ _command surf
   , \ (Test nm d) -> do
-      renderPGF (name nm "pdf") (Dims 200 200) surf d
+      renderPGF (name nm "pdf") (dims2D 200 200) surf d
 
       -- rawSystem "convert" [name nm "pdf", name nm "png"]
       rawSystem "gs" [ "-q",  "-dNOPAUSE", "-dBATCH", "-sDEVICE=pngalpha", "-r72", "-dEPSCrop"
@@ -44,6 +44,7 @@ pgfTester' surf =
   )
  where
    name nm ext = "pgf" </> nm <.> ext
+   dims2D x y = dims (V2 x y)
 
 pgfTester = pgfTester' latexSurface
 

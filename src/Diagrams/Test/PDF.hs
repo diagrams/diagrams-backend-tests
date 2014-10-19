@@ -14,7 +14,7 @@ pdfTester =
   ( "pdf"
   , \ (Test nm dig) -> do
       let docRect = PDFRect 0 0 200 200
-          pdfOpts = PdfOptions (Dims 200 200)
+          pdfOpts = PdfOptions (dims2D 200 200)
       runPdf (name nm "pdf") (standardDocInfo { author=toPDFString "alpheccar", compressed = False}) docRect $ do
               page1 <- addPage Nothing
               drawWithPage page1 $ renderDia Pdf pdfOpts dig

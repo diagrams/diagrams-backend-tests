@@ -28,7 +28,7 @@ data Test n = Test
                 ( Renderable (Path V2 n) canvas
                 , Renderable (Text n) canvas
                 , Backend canvas V2 n
-                ) => Diagram canvas V2 n
+                ) => QDiagram canvas V2 n Any
         ) -- ^ and the diagram
 
 -----------------------------------------------------------------------
@@ -72,7 +72,7 @@ runTests tests name backends = do
         writeFile name $ renderHtml doc
 
 -- ^ list of cannonical examples.
-examples :: DataFloat n => [Test n]
+examples :: TypeableFloat n => [Test n]
 examples =
         [ Test "square1" $ square 1
         , Test "circle1" $ circle 1
@@ -88,7 +88,7 @@ examples =
                 square 1 ||| rect 0.3 0.5 ||| eqTriangle 1 ||| roundedRect 0.7 0.4 0.1
         , Test "circle-hrule-circle" $
                 circle 1 ||| hrule 2 ||| circle 1
-        , Test "poly-example" $
+        , Test "poly-example"
                 poly_example
         , Test "star-polygon" $
                 star (StarSkip 3) (regPoly 13 1) # stroke
@@ -139,14 +139,14 @@ examples =
                in  t1 =/= t2 =/= t3
 
         , Test "text-attributes" $
-               let text' s t = text t # fontSize (Global s) <> strutY (s * 1.3)
+               let text' s t = text t # fontSize (global s) <> strutY (s * 1.3)
                in pad 1.1 . centerXY $
                     text' 10 "Hello" # italic
                     === text' 5 "there"  # bold # font "freeserif"
                     === text' 3 "world"  # fc green
 
         , Test "text-transforms" $
-               let eff = text "F" <> square 1 # lwG 0
+               let eff = text "F" <> square 1 # lwO 0
                    ts  = [ scale (1/2), id, scale 2, scaleX 2, scaleY 2
                          , scale (-1), scaleX (-1), scaleY (-1)
                          ]
@@ -204,7 +204,7 @@ examples =
         , Test "fat" $
                unitCircle # lwG 0.3 # scaleX 2 # pad 1.3
 
-        , Test "connect" $ connect_example
+        , Test "connect" connect_example
 
         , Test "fill-line" $
                strokeLine (fromVertices [origin, 0 ^& 2, 3 ^& 3, 4 ^& 1])

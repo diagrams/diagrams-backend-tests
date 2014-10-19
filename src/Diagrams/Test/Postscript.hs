@@ -16,7 +16,7 @@ postscriptTester =
   ( "postscript"
   , \ (Test nm dig) -> do
       renderDia Postscript
-        (PostscriptOptions (name nm "eps") (Dims 200 200) EPS)
+        (PostscriptOptions (name nm "eps") (dims2D 200 200) EPS)
         dig
 --      rawSystem "epstopdf" [name nm "eps"]
       rawSystem "convert" ["-alpha", "on", name nm "eps", name nm "png32"]

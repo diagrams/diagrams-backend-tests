@@ -3,7 +3,7 @@ module Diagrams.Test.Rasterific (rasterificTester) where
 import           Codec.Picture (readImage, DynamicImage(..))
 import           Codec.Picture.Types (promoteImage)
 import           Diagrams.Backend.Rasterific
-import           Diagrams.Prelude hiding (D, (<.>))
+import           Diagrams.Prelude hiding (D)
 import           Diagrams.Tests
 import           Diagrams.Compare
 import           System.FilePath ((</>),(<.>))
@@ -14,7 +14,7 @@ rasterificTester :: (String, Test Float -> IO Html)
 rasterificTester =
   ( "rasterific"
   , \ (Test nm dig) -> do
-      renderRasterific (name nm) (Dims 200 200) 100 dig
+      renderRasterific (name nm) (dims2D 200 200) 100 dig
       -- The generated image.
       img <- readImage $ name nm
       -- The reference image.
