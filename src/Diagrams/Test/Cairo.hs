@@ -16,7 +16,7 @@ cairoTester =
   ( "cairo"
   , \ (Test nm dig) -> do
       fst $ renderDia Cairo
-              (CairoOptions (name nm) (Dims 200 200) PNG False)
+              (CairoOptions (name nm) (dims2D 200 200) PNG False)
               dig
       img <- readImage $ name nm
       ref <- readImage $ "ref/" ++ nm ++ ".png"
@@ -27,8 +27,8 @@ cairoTester =
           addAlpha img= case img of
             ImageRGB8 i -> ImageRGBA8 $ promoteImage i
             otherwise -> img
-          cap = figCaption (toHtml $ "mse: " ++ printf "%5.3e" m 
-                                             ++ ", psnr: " 
+          cap = figCaption (toHtml $ "mse: " ++ printf "%5.3e" m
+                                             ++ ", psnr: "
                                              ++ printf "%4.1f" p
                                              ++ " db")
       return $ figure $ H.image ! [ src (name nm) ] +++ cap

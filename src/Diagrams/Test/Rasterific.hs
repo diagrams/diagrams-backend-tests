@@ -14,7 +14,7 @@ rasterificTester :: (String, Test Float -> IO Html)
 rasterificTester =
   ( "rasterific"
   , \ (Test nm dig) -> do
-      renderRasterific (name nm) (Dims 200 200) 100 dig
+      renderRasterific (name nm) (dims2D 200 200) dig
       -- The generated image.
       img <- readImage $ name nm
       -- The reference image.
@@ -31,8 +31,8 @@ rasterificTester =
             otherwise -> img
           -- figure and figCaption are new to Html5 and are implemented
           -- in Diagrams.Tests.
-          cap = figCaption (toHtml $ "mse: " ++ printf "%5.3e" m 
-                                             ++ ", psnr: " 
+          cap = figCaption (toHtml $ "mse: " ++ printf "%5.3e" m
+                                             ++ ", psnr: "
                                              ++ printf "%4.1f" p
                                              ++ " db")
       return $ figure $ H.image ! [ src (name nm) ] +++ cap

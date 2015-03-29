@@ -16,7 +16,7 @@ postscriptTester =
   ( "postscript"
   , \ (Test nm dig) -> do
       renderDia Postscript
-        (PostscriptOptions (name nm "eps") (Dims 200 200) EPS)
+        (PostscriptOptions (name nm "eps") (dims2D 200 200) EPS)
         dig
 --      rawSystem "epstopdf" [name nm "eps"]
       rawSystem "convert" ["-alpha", "on", name nm "eps", name nm "png32"]
@@ -36,8 +36,8 @@ postscriptTester =
             otherwise -> img
           -- figure and figCaption are new to Html5 and are implemented
           -- in Diagrams.Tests.
-          cap = figCaption (toHtml $ "mse: " ++ printf "%5.3e" m 
-                                             ++ ", psnr: " 
+          cap = figCaption (toHtml $ "mse: " ++ printf "%5.3e" m
+                                             ++ ", psnr: "
                                              ++ printf "%4.1f" p
                                              ++ " db")
       return $ figure $ H.image ! [ src (name nm "png") ] +++ cap

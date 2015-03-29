@@ -17,8 +17,7 @@ svgTester :: (String, Test Double -> IO Html)
 svgTester =
   ( "SVG"
   , \ (Test nm dig) -> do
-      let svg = renderDia SVG (SVGOptions (Dims 200 200) Nothing) dig
-      BS.writeFile (name nm "svg") (renderSvg svg)
+      renderSVG (name nm "svg") (dims2D 200 200) dig
       rawSystem "convert" ["-background", "none", name nm "svg", name nm "png32"]
       -- The generated image.
       img <- readImage $ name nm "png32"
@@ -34,8 +33,8 @@ svgTester =
             otherwise -> img
           -- figure and figCaption are new to Html5 and are implemented
           -- in Diagrams.Tests.
-          cap = figCaption (toHtml $ "mse: " ++ printf "%5.3e" m 
-                                             ++ ", psnr: " 
+          cap = figCaption (toHtml $ "mse: " ++ printf "%5.3e" m
+                                             ++ ", psnr: "
                                              ++ printf "%4.1f" p
                                              ++ " db")
       return $ figure $ H.image ! [ src (name nm "svg") ] +++ cap

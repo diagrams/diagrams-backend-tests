@@ -28,7 +28,7 @@ data Test n = Test
                 ( Renderable (Path V2 n) canvas
                 , Renderable (Text n) canvas
                 , Backend canvas V2 n
-                ) => Diagram canvas V2 n
+                ) => QDiagram canvas V2 n Any
         ) -- ^ and the diagram
 
 -----------------------------------------------------------------------
@@ -72,7 +72,7 @@ runTests tests name backends = do
         writeFile name $ renderHtml doc
 
 -- ^ list of cannonical examples.
-examples :: DataFloat n => [Test n]
+examples :: TypeableFloat n => [Test n]
 examples =
         [ Test "square1" $ square 1
         , Test "circle1" $ circle 1
@@ -91,11 +91,11 @@ examples =
         , Test "poly-example" $
                 poly_example
         , Test "star-polygon" $
-                star (StarSkip 3) (regPoly 13 1) # stroke
+                star (StarSkip 3) (regPoly 13 1) # strokeP
         , Test "star-skip" $
-                stroke (star (StarSkip 2) (regPoly 8 1))
+                strokeP (star (StarSkip 2) (regPoly 8 1))
                        ||| strutX 1
-                       ||| stroke (star (StarSkip 3) (regPoly 8 1))
+                       ||| strokeP (star (StarSkip 3) (regPoly 8 1))
         , Test "superimposing" $
                 circle 1 `atop` square (sqrt 2)
         , Test "superimposing-color" $
@@ -139,7 +139,7 @@ examples =
                in  t1 =/= t2 =/= t3
 
         , Test "text-attributes" $
-               let text' s t = text t # fontSize (Global s) <> strutY (s * 1.3)
+               let text' s t = text t # fontSizeG s <> strutY (s * 1.3)
                in pad 1.1 . centerXY $
                     text' 10 "Hello" # italic
                     === text' 5 "there"  # bold # font "freeserif"
@@ -156,7 +156,7 @@ examples =
         , Test "ring" $
                let ring = asPath $ circle 3 <> circle 2
 
-               in  stroke ring # fc purple # fillRule EvenOdd # pad 1.1
+               in  strokeP ring # fc purple # fillRule EvenOdd # pad 1.1
 
         , Test "fill-rules" $
                let loopyStar = fc red
@@ -175,7 +175,7 @@ examples =
                 # clipBy (square 3.2 # rotateBy (1/10))
 
         , Test "clip-stacked" $
-            let p = stroke $ square 500 # alignBL
+            let p = strokeP $ square 500 # alignBL
                 bg = p # fc blue
                 sq1 = p # fc green
                 sq2 = p # fc red
@@ -216,7 +216,7 @@ examples =
 
         , Test "line-loop" $
                fc green $
-               stroke $
+               strokeP $
                trailLike ((fromVertices [origin, 0 ^& 2, 3 ^& 3, 4 ^& 1] # rotateBy (1/12) # closeLine # wrapLoop) `at` origin)
                <>
                trailLike ((fromVertices [origin, 0 ^& 2, 3 ^& 3, 4 ^& 1] # wrapLine) `at` origin)
@@ -257,7 +257,7 @@ squares =  (s # named NW ||| s # named NE)
        === (s # named SW ||| s # named SE)
   where s = square 1 # lwG 0.05
 
-d = hcat' (with & sep .~ 0.5) (zipWith (|>) [0::Int ..] (replicate 5 squares))
+d = hcat' (with & sep .~ 0.5) (zipWith (.>>) [0::Int ..] (replicate 5 squares))
 
 pairs = [ ((0::Int) .> NE, (2::Int) .> SW)
         , ((1::Int) .> SE, (4::Int) .> NE)
