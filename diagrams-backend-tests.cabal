@@ -1,5 +1,5 @@
 Name:                diagrams-backend-tests
-Version:             0.2
+Version:             0.3
 Synopsis:            Backend test framework for diagrams
 Description:         This package provides a framework for generating
                      diagrams (for specific back ends) and presenting
@@ -25,22 +25,22 @@ Flag all
 
 Executable all-test
    if flag (all)
-     Build-depends:    base >= 4.2 && < 4.8,
+     Build-depends:    base >= 4.2 && < 4.9,
                        html >= 1.0.1.2 && < 2.0,
                        directory,
                        filepath,
                        process,
-                       diagrams-core >= 1.0 && < 1.3,
-                       diagrams-lib >= 1.0 && < 1.3,
-                       diagrams-cairo >= 1.0 && < 1.3,
-                       diagrams-svg >= 1.0 && < 1.2,
-                       diagrams-postscript >= 1.0 && < 1.2,
-                       diagrams-rasterific >= 0.1 && < 0.2,
-                       blaze-svg >= 0.3.3 && < 0.4,
+                       diagrams-core >= 1.3 && < 1.4,
+                       diagrams-lib >= 1.3 && < 1.4,
+                       diagrams-cairo >= 1.3 && < 1.4,
+                       diagrams-svg >= 1.3 && < 1.4,
+                       diagrams-postscript >= 1.3 && < 1.4,
+                       diagrams-rasterific >= 1.3 && < 0.4,
+                       diagrams-pgf,
                        bytestring >= 0.9  && < 0.11,
-                       Rasterific >= 0.2 && < 0.4,
+                       Rasterific >= 1.3 && < 1.4,
                        JuicyPixels >= 3.1.6 && < 3.2,
-                       vector >= 0.10.10 && < 0.11  
+                       vector >= 0.10.10
      buildable: True
    else
      Build-depends:    base
@@ -61,9 +61,9 @@ Executable cairo-test
                        html >= 1.0.1.2 && < 2.0,
                        directory,
                        filepath,
-                       diagrams-core >= 1.0 && < 1.3,
-                       diagrams-lib >= 1.0 && < 1.3,
-                       diagrams-cairo >= 1.0 && < 1.3,
+                       diagrams-core >= 1.3 && < 1.4,
+                       diagrams-lib >= 1.3 && < 1.4,
+                       diagrams-cairo >= 1.3 && < 1.4,
                        JuicyPixels,
                        vector >= 0.10.10 && < 0.11  
      buildable: True
@@ -82,14 +82,13 @@ Flag svg
 
 Executable svg-test
    if flag(svg)
-     Build-depends:    base >= 4.2 && < 4.8,
+     Build-depends:    base >= 4.2 && < 4.9,
                        html >= 1.0.1.2 && < 2.0,
                        directory,
                        filepath,
-                       diagrams-core >= 1.0 && < 1.3,
-                       diagrams-lib >= 1.0 && < 1.3,
-                       diagrams-svg >= 1.0 && < 1.2,
-                       blaze-svg >= 0.3.3 && < 0.4,
+                       diagrams-core >= 1.3 && < 1.4,
+                       diagrams-lib >= 1.3 && < 1.4,
+                       diagrams-svg >= 1.3 && < 1.4,
                        bytestring >= 0.9 && < 0.11,
                        JuicyPixels,
                        process >=1.2,
@@ -110,18 +109,18 @@ Flag rasterific
 
 Executable rasterific-test
    if flag(rasterific)
-     Build-depends:    base >= 4.2 && < 4.8,
+     Build-depends:    base >= 4.2 && < 4.9,
                        html >= 1.0.1.2 && < 2.0,
                        directory,
                        filepath,
-                       diagrams-core >= 1.0 && < 1.3,
-                       diagrams-lib >= 1.0 && < 1.3,
-                       diagrams-rasterific >= 0.1 && < 0.2,
+                       diagrams-core >= 1.3 && < 1.4,
+                       diagrams-lib >= 1.3 && < 1.4,
+                       diagrams-rasterific >= 1.3 && < 1.4,
                        Rasterific,
                        FontyFruity,
                        bytestring,
                        JuicyPixels,
-                       vector >= 0.10.10 && < 0.11  
+                       vector >= 0.10.10
      buildable: True
    else
      Build-depends:    base
@@ -129,40 +128,6 @@ Executable rasterific-test
    main-is:           Rasterific.hs
    hs-source-dirs:    src, tests
    default-language:  Haskell2010
-
--- Use cabal configure -fpdf to test the PDF backend
-Flag pdf
-  Description: Test PDF backend
-  Default:     False
-  Manual:      True
-
-Executable pdf-test
-   if flag(pdf)
-     Build-depends:    base >= 4.6 && < 4.8,
-                       mtl >= 2.1 && < 2.2 ,
-                       monoid-extras >= 0.3 && < 0.4,
-                       semigroups >= 0.9.2 && < 0.16,
-                       HPDF >= 1.4.5 && < 1.5,
-                       vector-space >= 0.8.6 && < 0.9,
-                       diagrams-lib >= 0.7 && < 1.3,
-                       diagrams-core >= 0.7 && < 1.3,
-                       filepath >= 1.3 && < 1.4,
-                       split >= 0.2.2 && < 0.3,
-                       cmdargs >= 0.10 && < 0.11,
-                       colour >= 2.3.3 && < 2.4,
-                       html >= 1.0.1.2 && < 2.0,
-                       process,
-                       diagrams-pdf >= 0.2.0 && < 0.3,
-                       directory
-     buildable: True
-   else
-     Build-depends:    base
-     buildable: False
-   main-is:           PDF.hs
-   hs-source-dirs:    src, tests
-   default-language:  Haskell2010
-
-
 
 -- Use cabal configure -fcanvas to test the canvas backend
 Flag canvas
@@ -172,12 +137,12 @@ Flag canvas
 
 Executable canvas-test
    if flag(canvas)
-     Build-depends:    base >= 4.2 && < 4.8,
+     Build-depends:    base >= 4.2 && < 4.9,
                        html >= 1.0.1.2 && < 2.0,
-                       directory >= 1.0.0.0 && < 1.3,
-                       diagrams-lib >= 1.0 && < 1.2,
-                       diagrams-core >= 1.0 && < 1.2,
-                       diagrams-canvas >= 0.2 && < 0.3
+                       directory,
+                       diagrams-lib >= 1.3 && < 1.4,
+                       diagrams-core >= 1.3 && < 1.4,
+                       diagrams-canvas >= 0.4 && < 0.5
      buildable: True
    else
      Build-depends:    base
@@ -194,14 +159,14 @@ Flag postscript
 
 Executable postscript-test
    if flag(postscript)
-     Build-depends:    base >= 4.2 && < 4.8,
+     Build-depends:    base >= 4.2 && < 4.9,
                        html >= 1.0.1.2 && < 2.0,
                        directory,
                        filepath,
                        process,
-                       diagrams-lib >= 1.0 && < 1.2,
-                       diagrams-core >= 1.0 && < 1.1,
-                       diagrams-postscript >= 1.0 && < 1.1,
+                       diagrams-lib >= 1.3 && < 1.4,
+                       diagrams-core >= 1.3 && < 1.4,
+                       diagrams-postscript >= 1.3 && < 1.4,
                        JuicyPixels >= 3.1.6 && < 3.2,
                        vector >= 0.10.10 && < 0.11  
      buildable: True
@@ -227,8 +192,8 @@ Executable pgf-test
                        process,
                        vector,
                        JuicyPixels,
-                       diagrams-core >= 1.0 && < 1.3,
-                       diagrams-lib >= 1.0 && < 1.3,
+                       diagrams-core >= 1.3 && < 1.4,
+                       diagrams-lib >= 1.3 && < 1.4,
                        diagrams-pgf
      buildable: True
    else
