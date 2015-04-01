@@ -10,7 +10,7 @@ import           System.FilePath ((</>),(<.>))
 import           Text.Html as H hiding ((</>))
 import           Text.Printf (printf)
 
-rasterificTester :: (String, Test Float -> IO Html)
+rasterificTester :: (String, Test Double -> IO Html)
 rasterificTester =
   ( "rasterific"
   , \ (Test nm dig) -> do

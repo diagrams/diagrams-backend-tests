@@ -5,6 +5,7 @@ svg/*
 cairo/*
 postscript/*
 pdf/*
+rasterific/*
 *-index.html
 .hsenv_*
 dist_*

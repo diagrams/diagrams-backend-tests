@@ -9,7 +9,6 @@ import           Diagrams.Prelude hiding (D, (<.>))
 import           Diagrams.Tests
 import           System.FilePath ((</>), (<.>))
 import           System.Process
-import           Text.Blaze.Svg.Renderer.Utf8 (renderSvg)
 import           Text.Html as H hiding ((</>))
 import           Text.Printf (printf)
 
