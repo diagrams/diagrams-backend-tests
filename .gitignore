@@ -6,6 +6,7 @@ cairo/*
 postscript/*
 pdf/*
 rasterific/*
+pgf/*
 *-index.html
 .hsenv_*
 dist_*
