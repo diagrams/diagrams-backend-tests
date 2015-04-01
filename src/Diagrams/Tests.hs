@@ -71,7 +71,7 @@ runTests tests name backends = do
                 $ concatHtml (header : result_rows)
         writeFile name $ renderHtml doc
 
--- ^ list of cannonical examples.
+-- | List of canonical examples.
 examples :: TypeableFloat n => [Test n]
 examples =
         [ Test "square1" $ square 1
@@ -153,6 +153,14 @@ examples =
 
                in  pad 1.1 . hcat . map (eff #) $ ts
 
+        , Test "text-transforms-normal" $
+               let eff = text "F" # fontSize (normalized 0.2) <> square 1 # lwG 0
+                   ts  = [ scale (1/2), id, scale 2, scaleX 2, scaleY 2
+                         , scale (-1), scaleX (-1), scaleY (-1)
+                         ]
+
+               in  pad 1.1 . hcat . map (eff #) $ ts
+
         , Test "ring" $
                let ring = asPath $ circle 3 <> circle 2
 
@@ -200,6 +208,10 @@ examples =
 
         , Test "text-opacity" $ pad 1.1 . centerXY $
                opacity 0.2 $ rect 8 1 # lwG 0.2 <> text "hello"
+
+        , Test "group-opacity" $
+               let circles = (circle 1 <> circle 1 # translateX 1) # fc red # lw none
+               in  hsep 1 [circles # opacity 0.3, circles # groupOpacity 0.3]
 
         , Test "fat" $
                unitCircle # lwG 0.3 # scaleX 2 # pad 1.3
