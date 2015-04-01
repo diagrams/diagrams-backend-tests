@@ -19,7 +19,7 @@ postscriptTester =
         (PostscriptOptions (name nm "eps") (dims2D 200 200) EPS)
         dig
 --      rawSystem "epstopdf" [name nm "eps"]
-      rawSystem "convert" ["-alpha", "on", name nm "eps", name nm "png32"]
+      system $ unwords ["convert", "-alpha", "on", name nm "eps", name nm "png32"]
       -- The generated image.
       img <- readImage $ name nm "png32"
       -- The reference image.
@@ -40,7 +40,7 @@ postscriptTester =
                                              ++ ", psnr: "
                                              ++ printf "%4.1f" p
                                              ++ " db")
-      return $ figure $ H.image ! [ src (name nm "png") ] +++ cap
+      return $ figure $ H.image ! [ src (name nm "png32") ] +++ cap
   )
  where
   name nm ext = prefix </> nm <.> ext
