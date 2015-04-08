@@ -183,6 +183,10 @@ examples =
                 # lwG 0.05
                 # clipBy (square 3.2 # rotateBy (1/10))
 
+        , Test "clip-multi" $ square 2 # fc orange
+                                       # clipBy (square 1)
+                                       # clipBy (square 1 # rotateBy (1/8))
+
         , Test "clip-stacked" $
             let p = strokeP $ square 500 # alignBL
                 bg = p # fc blue
