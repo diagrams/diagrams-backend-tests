@@ -57,7 +57,7 @@ Flag cairo
 
 Executable cairo-test
    if flag(cairo)
-     Build-depends:    base >= 4.2 && < 4.8,
+     Build-depends:    base >= 4.2 && < 4.9,
                        html >= 1.0.1.2 && < 2.0,
                        directory,
                        filepath,
