@@ -15,9 +15,9 @@ import           Text.Printf
 
 pgfTester' :: Surface -> (String, Test Double -> IO Html)
 pgfTester' surf =
-  ( "pgf - " ++ _command surf
+  ( "pgf - " ++ cmd
   , \ (Test nm d) -> do
-      renderPGF (name nm "pdf") (dims2D 200 200) surf d
+      renderPGFSurf (name nm "tex") (dims2D 200 200) surf d
 
       -- rawSystem "convert" [name nm "pdf", name nm "png"]
       rawSystem "gs" [ "-q",  "-dNOPAUSE", "-dBATCH", "-sDEVICE=pngalpha", "-r72", "-dEPSCrop"
@@ -44,6 +44,7 @@ pgfTester' surf =
   )
  where
    name nm ext = "pgf" </> nm <.> ext
+   cmd = surf ^. command
 
 pgfTester = pgfTester' latexSurface
 
