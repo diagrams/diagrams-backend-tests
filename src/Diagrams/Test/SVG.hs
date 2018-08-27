@@ -12,7 +12,7 @@ import           System.Process
 import           Text.Html as H hiding ((</>))
 import           Text.Printf (printf)
 
-svgTester :: (String, Test Double -> IO Html)
+svgTester :: (String, Test V2 -> IO Html)
 svgTester =
   ( "SVG"
   , \ (Test nm dig) -> do

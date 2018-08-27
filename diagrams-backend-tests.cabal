@@ -1,204 +1,33 @@
-Name:                diagrams-backend-tests
-Version:             0.3
-Synopsis:            Backend test framework for diagrams
-Description:         This package provides a framework for generating
-                     diagrams (for specific back ends) and presenting
-                     them beside known (golden) images.
-Homepage:            http://projects.haskell.org/diagrams/
-License:             BSD3
-License-file:        LICENSE
-Author:              Andy Gill, Jeffrey Rosenbluth, Brent Yorgey
-Maintainer:          diagrams-discuss@googlegroups.com
-Stability:           Experimental
-Category:            Graphics, Test
-Build-type:          Simple
-Cabal-version:       >=1.10
-Source-repository head
-  type:     git
-  location: git://github.com/diagrams/diagrams-backend-tests
+name:                diagrams-backend-tests
+version:             2.0
+synopsis:            Backend tests for diagrams
+-- description:         
+license:             BSD3
+license-file:        LICENSE
+author:              Christopher Chalmers
+maintainer:          c.chalmers@me.com
+-- copyright:           
+category:            Graphics
+build-type:          Simple
+extra-source-files:  ChangeLog.md, README.md
+cabal-version:       >=1.10
 
-
-Flag all
-  Description: Test and compare all backends together
-  Default:     False
-  Manual:      True
-
-Executable all-test
-   if flag (all)
-     Build-depends:    base >= 4.2 && < 4.9,
-                       html >= 1.0.1.2 && < 2.0,
-                       directory,
-                       filepath,
-                       process,
-                       diagrams-core >= 1.3 && < 1.4,
-                       diagrams-lib >= 1.3 && < 1.4,
-                       diagrams-cairo >= 1.3 && < 1.4,
-                       diagrams-svg >= 1.4 && < 1.5,
-                       diagrams-postscript >= 1.3 && < 1.4,
-                       diagrams-rasterific >= 1.3 && < 1.4,
-                       diagrams-pgf,
-                       bytestring >= 0.9  && < 0.11,
-                       Rasterific >= 0.5 && < 0.7,
-                       JuicyPixels >= 3.1.6 && < 3.3,
-                       vector >= 0.10.10
-     buildable: True
-   else
-     Build-depends:    base
-     buildable:        False
-   main-is:           All.hs
-   hs-source-dirs:    src, tests
-   default-language:  Haskell2010
-
--- Use cabal configure -fcairo to test the cairo backend
-Flag cairo
-  Description: Test cairo backend
-  Default:     False
-  Manual:      True
-
-Executable cairo-test
-   if flag(cairo)
-     Build-depends:    base >= 4.2 && < 4.9,
-                       html >= 1.0.1.2 && < 2.0,
-                       directory,
-                       filepath,
-                       diagrams-core >= 1.3 && < 1.4,
-                       diagrams-lib >= 1.3 && < 1.4,
-                       diagrams-cairo >= 1.3 && < 1.4,
-                       JuicyPixels,
-                       vector >= 0.10.10 && < 0.11  
-     buildable: True
-   else
-     Build-depends:    base
-     buildable: False
-   main-is:           Cairo.hs
-   hs-source-dirs:    src, tests
-   default-language:  Haskell2010
-
--- Use cabal configure -fsvg to test the SVG backend
-Flag svg
-  Description: Test SVG backend
-  Default:     False
-  Manual:      True
-
-Executable svg-test
-   if flag(svg)
-     Build-depends:    base >= 4.2 && < 4.9,
-                       html >= 1.0.1.2 && < 2.0,
-                       directory,
-                       filepath,
-                       diagrams-core >= 1.3 && < 1.4,
-                       diagrams-lib >= 1.3 && < 1.4,
-                       diagrams-svg >= 1.3 && < 1.4,
-                       bytestring >= 0.9 && < 0.11,
-                       JuicyPixels,
-                       process >=1.2,
-                       vector >= 0.10.10 && < 0.11  
-     buildable: True
-   else
-     Build-depends:    base
-     buildable: False
-   main-is:           SVG.hs
-   hs-source-dirs:    src, tests
-   default-language:  Haskell2010
-
--- Use cabal configure -frasterific to test the Rasterific backend
-Flag rasterific
-  Description: Test Rasterific backend
-  Default:     False
-  Manual:      True
-
-Executable rasterific-test
-   if flag(rasterific)
-     Build-depends:    base >= 4.2 && < 4.9,
-                       html >= 1.0.1.2 && < 2.0,
-                       directory,
-                       filepath,
-                       diagrams-core >= 1.3 && < 1.4,
-                       diagrams-lib >= 1.3 && < 1.4,
-                       diagrams-rasterific >= 1.3 && < 1.4,
-                       Rasterific,
-                       FontyFruity,
-                       bytestring,
-                       JuicyPixels,
-                       vector >= 0.10.10
-     buildable: True
-   else
-     Build-depends:    base
-     buildable: False
-   main-is:           Rasterific.hs
-   hs-source-dirs:    src, tests
-   default-language:  Haskell2010
-
--- Use cabal configure -fcanvas to test the canvas backend
-Flag canvas
-  Description: Test HTML5 canvas backend
-  Default:     False
-  Manual:      True
-
-Executable canvas-test
-   if flag(canvas)
-     Build-depends:    base >= 4.2 && < 4.9,
-                       html >= 1.0.1.2 && < 2.0,
-                       directory,
-                       diagrams-lib >= 1.3 && < 1.4,
-                       diagrams-core >= 1.3 && < 1.4,
-                       diagrams-canvas >= 0.4 && < 0.5
-     buildable: True
-   else
-     Build-depends:    base
-     buildable: False
-   main-is:           Canvas.hs
-   hs-source-dirs:    src, tests
-   default-language:  Haskell2010
-
--- Use cabal configure -fpostscript to test the postscript backend
-Flag postscript
-  Description: Test postscript backend
-  Default:     False
-  Manual:      True
-
-Executable postscript-test
-   if flag(postscript)
-     Build-depends:    base >= 4.2 && < 4.9,
-                       html >= 1.0.1.2 && < 2.0,
-                       directory,
-                       filepath,
-                       process,
-                       diagrams-lib >= 1.3 && < 1.4,
-                       diagrams-core >= 1.3 && < 1.4,
-                       diagrams-postscript >= 1.3 && < 1.4,
-                       JuicyPixels >= 3.1.6 && < 3.2,
-                       vector >= 0.10.10 && < 0.11  
-     buildable: True
-   else
-     Build-depends:    base
-     buildable: False
-   main-is:           Postscript.hs
-   hs-source-dirs:    src, tests
-   default-language:  Haskell2010
-
--- Use cabal configure -fpgf to test the PGF backend
-Flag pgf
-  Description: Test PGF backend
-  Default:     False
-  Manual:      True
-
-Executable pgf-test
-   if flag(pgf)
-     Build-depends:    base >= 4.2 && < 4.9,
-                       html >= 1.0.1.2 && < 2.0,
-                       directory,
-                       filepath,
-                       process,
-                       vector,
-                       JuicyPixels,
-                       diagrams-core >= 1.3 && < 1.4,
-                       diagrams-lib >= 1.3 && < 1.4,
-                       diagrams-pgf
-     buildable: True
-   else
-     Build-depends:    base
-     buildable: False
-   main-is:           PGF.hs
-   hs-source-dirs:    src, tests
-   default-language:  Haskell2010
+library
+  exposed-modules: 
+    Diagrams.Tests
+  other-extensions:
+    FlexibleContexts, RankNTypes, DeriveDataTypeable,
+    MultiParamTypeClasses, NoMonomorphismRestriction, TypeFamilies
+  build-depends:
+    base         >=4.9  && <5.0,
+    vector,
+    JuicyPixels,
+    diagrams     >=2.0,
+    html,
+    geometry,
+    filepath,
+    process,
+    bytestring,
+    directory
+  hs-source-dirs:      src
+  default-language:    Haskell2010
