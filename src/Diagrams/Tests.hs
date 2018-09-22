@@ -376,9 +376,7 @@ linearGradient_example = hsep 0.25 [sq1, sq2, sq3] where
 radialGradient_example :: Diagram V2
 radialGradient_example = rg
   where
-    gradient = mkRadialGradient ([(gray,1), (purple,1)]) origin 0.5
-                         -- (0 ^& 0) 0.1 (0 ^& 0) 0.5
-                         -- GradPad
+    gradient = mkRadialGradient ([(gray,0), (purple,1)]) origin 0.5
     sq1 = square 1 # fillTexture  gradient
 
     gradient2 = gradient
