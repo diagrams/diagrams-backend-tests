@@ -1,10 +1,8 @@
 module Main where
 
-import System.Directory
+import           Diagrams.Backend.Rasterific
+import           Diagrams.Tests
+import           Diagrams.Tests.TwoD
 
-import Diagrams.Tests
-import Diagrams.Test.Rasterific
-
-main = do
-   createDirectoryIfMissing False "rasterific"
-   runTests (examples) "rasterific-index.html" $ [rasterificTester]
+main :: IO ()
+main = defaultRunTests "rasterific" PNG Rasterific

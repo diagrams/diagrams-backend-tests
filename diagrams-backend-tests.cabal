@@ -13,8 +13,9 @@ extra-source-files:  ChangeLog.md, README.md
 cabal-version:       >=1.10
 
 library
-  exposed-modules: 
+  exposed-modules:
     Diagrams.Tests
+    Diagrams.Tests.TwoD
   other-extensions:
     FlexibleContexts, RankNTypes, DeriveDataTypeable,
     MultiParamTypeClasses, NoMonomorphismRestriction, TypeFamilies
@@ -24,10 +25,79 @@ library
     JuicyPixels,
     diagrams     >=2.0,
     html,
+    lucid,
+    text,
+    exceptions,
     geometry,
     filepath,
     process,
     bytestring,
+    diagrams-svg,
+    lens,
     directory
   hs-source-dirs:      src
   default-language:    Haskell2010
+  ghc-options: -Wall
+
+executable test-pgf
+  main-is: PGF.hs
+  hs-source-dirs: tests
+  default-language: Haskell2010
+  build-depends:
+    base         >=4.9  && <5.0,
+    diagrams-backend-tests,
+    vector,
+    JuicyPixels,
+    diagrams     >=2.0,
+    html,
+    lucid,
+    text,
+    geometry,
+    filepath,
+    process,
+    bytestring,
+    diagrams-pgf,
+    lens,
+    directory
+
+executable test-rasterific
+  main-is: Rasterific.hs
+  hs-source-dirs: tests
+  default-language: Haskell2010
+  build-depends:
+    base         >=4.9  && <5.0,
+    diagrams-backend-tests,
+    vector,
+    JuicyPixels,
+    diagrams     >=2.0,
+    html,
+    lucid,
+    text,
+    geometry,
+    filepath,
+    process,
+    bytestring,
+    diagrams-rasterific,
+    lens,
+    directory
+
+executable test-svg
+  main-is: SVG.hs
+  hs-source-dirs: tests
+  default-language: Haskell2010
+  build-depends:
+    base         >=4.9  && <5.0,
+    diagrams-backend-tests,
+    vector,
+    JuicyPixels,
+    diagrams     >=2.0,
+    html,
+    lucid,
+    text,
+    geometry,
+    filepath,
+    process,
+    bytestring,
+    diagrams-svg,
+    lens,
+    directory

@@ -1,9 +1,8 @@
 module Main where
 
-import Diagrams.Tests
-import Diagrams.Test.SVG
-import System.Directory
+import qualified Diagrams.Backend.SVG as SVG
+import           Diagrams.Tests
+import           Diagrams.Tests.TwoD
 
-main = do
-   createDirectoryIfMissing False "svg"
-   runTests (examples) "svg-index.html" $ [svgTester]
+main :: IO ()
+main = defaultRunTests "svg" SVG SVG.SVG
