@@ -166,7 +166,7 @@ htmlTestGroup HtmlDisplayOptions {..} (TestGroup suiteName tests) = do
   div_ [class_ "row py-2"] $ do
     flip mapM_ tests $ \(Test testName _) -> do
       let refSrc = referenceFolder </> testName <.> referenceExtension
-          src = testFolder </> testName <.> testExtension
+          src = testFolder </> testName <.> "png"
           mkImg s = img_ [src_ (pack s), width_ (pack $ show testWidth), height_ (pack $ show testHeight)]
       div_ [class_ "col-lg-6"] $ do
         h5_ (toHtml testName)
