@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import Lucid
-import Data.Text (Text)
+import           Data.Text (Text)
+import           Lucid
 
 header :: Html ()
 header = header_ $ do
