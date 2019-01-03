@@ -39,6 +39,27 @@ library
   default-language:    Haskell2010
   ghc-options: -Wall
 
+executable test-cairo
+  main-is: Cairo.hs
+  hs-source-dirs: tests
+  default-language: Haskell2010
+  build-depends:
+    base         >=4.9  && <5.0,
+    diagrams-backend-tests,
+    vector,
+    JuicyPixels,
+    diagrams     >=2.0,
+    html,
+    lucid,
+    text,
+    geometry,
+    filepath,
+    process,
+    bytestring,
+    diagrams-cairo,
+    lens,
+    directory
+
 executable test-pgf
   main-is: PGF.hs
   hs-source-dirs: tests
