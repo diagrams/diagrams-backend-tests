@@ -10,34 +10,40 @@ maintainer:          c.chalmers@me.com
 category:            Graphics
 build-type:          Simple
 extra-source-files:  ChangeLog.md, README.md
+data-files:          ref/*.png
+
 cabal-version:       >=1.10
 
 library
   exposed-modules:
     Diagrams.Tests
     Diagrams.Tests.TwoD
+    Diagrams.Tests.CmdLine
+  other-modules: Paths_diagrams_backend_tests
   other-extensions:
     FlexibleContexts, RankNTypes, DeriveDataTypeable,
     MultiParamTypeClasses, NoMonomorphismRestriction, TypeFamilies
   build-depends:
     base         >=4.9  && <5.0,
-    vector,
-    JuicyPixels,
     diagrams     >=2.0,
-    html,
-    lucid,
-    text,
-    exceptions,
-    geometry,
-    filepath,
-    process,
+    JuicyPixels,
     bytestring,
     diagrams-svg,
+    directory,
+    exceptions,
+    filepath,
+    geometry,
+    html,
     lens,
-    directory
+    lucid,
+    optparse-generic,
+    process,
+    text,
+    vector
   hs-source-dirs:      src
   default-language:    Haskell2010
   ghc-options: -Wall
+  CPP-options: -DCABAL
 
 executable test-cairo
   main-is: Cairo.hs

@@ -5,4 +5,4 @@ import           Diagrams.Tests as T
 import           Diagrams.Tests.TwoD
 
 main :: IO ()
-main = defaultRunTests "cairo" T.PNG Cairo
+main = defaultRunTests T.PNG Cairo

@@ -1,15 +1,11 @@
-{-# LANGUAGE DeriveDataTypeable        #-}
-{-# LANGUAGE FlexibleContexts          #-}
-{-# LANGUAGE MultiParamTypeClasses     #-}
-{-# LANGUAGE NoMonomorphismRestriction #-}
-{-# LANGUAGE OverloadedStrings         #-}
-{-# LANGUAGE RankNTypes                #-}
-{-# LANGUAGE RecordWildCards           #-}
-{-# LANGUAGE TypeFamilies              #-}
-
+{-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE FlexibleContexts #-}
 module Diagrams.Tests
   ( Test(..)
   , TestGroup(..)
+  , filterTests
   , saveDiagramPng
   , defaultSize
   , DefaultTestFormat (..)
@@ -43,6 +39,19 @@ testDia f (Test nm dia) = Test nm <$> indexed f nm dia
 
 -- | A named list of tests.
 data TestGroup v = TestGroup String [Test v]
+
+groupName :: Lens' (TestGroup v) String
+groupName f (TestGroup nm tests) = f nm <&> \nm' -> TestGroup nm' tests
+
+-- | Filter the test groups by name (case insensitive). If no names are
+--   given use all the tests.
+filterTests :: [String] -> [TestGroup v] -> Either String [TestGroup v]
+filterTests [] gs = Right gs
+filterTests (fmap $ fmap toLower -> groupNames) gs =
+  case filter ((`elem` groupNames) . fmap toLower . view groupName) gs of
+    [] -> Left $ "No groups with the names " <> unwords groupNames <> ".\nChoose from\n"
+       <> unlines (gs ^.. folded . groupName . to ("  " <>))
+    gs' -> Right gs'
 
 groupDias :: IndexedTraversal' String (TestGroup v) (Test v)
 groupDias f (TestGroup nm tests) = TestGroup nm <$> traverse (indexed f nm) tests
@@ -103,12 +112,12 @@ renderTests
   -> [TestGroup (V b)]
   -> IO ()
 renderTests format b path sz testGroups =
-  flip mapM_ testGroups $ \(TestGroup groupName tests) ->
+  flip mapM_ testGroups $ \(TestGroup gName tests) ->
     flip mapM_ tests $ \(Test testName d) ->
       (saveDiagramPng format b (path </> testName) sz d
         `catchAll` \e -> do
           putStrLn $ "error running diagram " <> testName <>
-           " for test group " <> groupName <> " with exception "
+           " for test group " <> gName <> " with exception "
            <> show e)
 
 ------------------------------------------------------------------------

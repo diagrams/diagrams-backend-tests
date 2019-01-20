@@ -5,4 +5,4 @@ import           Diagrams.Tests
 import           Diagrams.Tests.TwoD
 
 main :: IO ()
-main = defaultRunTests "svg" SVG SVG.SVG
+main = defaultRunTests SVG SVG.SVG

@@ -1,4 +1,5 @@
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE RecordWildCards #-}
 
 module Diagrams.Tests.TwoD
   ( twoDTests
@@ -11,32 +12,32 @@ module Diagrams.Tests.TwoD
 
 import           Data.Typeable
 import           System.Directory
-import           System.Environment
 import           System.FilePath
 
-import           Diagrams.Prelude
+import           Diagrams.Prelude hiding (Wrapped, output)
 import           Diagrams.TwoD.Text
 
 import           Diagrams.Tests
+import           Diagrams.Tests.CmdLine
 
 defaultRunTests
   :: (Typeable b, BackendBuild b, V b ~ V2)
-  => FilePath
-  -- ^ output path
-  -> DefaultTestFormat
+  => DefaultTestFormat
   -- ^ test output format
   -> b
   -- ^ backend
   -> IO ()
-defaultRunTests path format b = do
-  args <- getArgs
-  let reference = case args of
-                    [ref] -> ref
-                    _     -> "ref"
-  createDirectoryIfMissing True path
-  let htmlPath = dropTrailingPathSeparator path <.> "html"
-  saveHtml (refOpts (show (typeOf b)) path (formatExtension format) reference) twoDTests htmlPath
-  renderTests format b path (dims2D 512 512) twoDTests
+defaultRunTests format b = do
+  let backendName = show (typeOf b)
+  TestOpts {..} <- testOpts backendName
+  writeFile "the-path.txt" referenceFolder
+  createDirectoryIfMissing True outputFolder
+  let htmlPath = outputFolder </> "index.html"
+      testOptions = refOpts backendName "" (formatExtension format) referenceFolder
+  case filterTests testGroups twoDTests of
+    Left err    -> error err
+    Right tests -> saveHtml testOptions tests htmlPath
+  renderTests format b outputFolder (dims2D 512 512) twoDTests
 
 -- | List of default examples.
 twoDTests :: [TestGroup V2]
