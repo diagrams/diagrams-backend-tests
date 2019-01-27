@@ -10,7 +10,7 @@ maintainer:          c.chalmers@me.com
 category:            Graphics
 build-type:          Simple
 extra-source-files:  ChangeLog.md, README.md
-data-files:          ref/*.png
+data-files:          ref/*.png assets/cat.png assets/cat.jpg
 
 cabal-version:       >=1.10
 
@@ -18,6 +18,7 @@ library
   exposed-modules:
     Diagrams.Tests
     Diagrams.Tests.TwoD
+    Diagrams.Tests.Assets
     Diagrams.Tests.CmdLine
   other-modules: Paths_diagrams_backend_tests
   other-extensions:

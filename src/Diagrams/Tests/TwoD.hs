@@ -1,5 +1,4 @@
 {-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies    #-}
 
 module Diagrams.Tests.TwoD
@@ -19,12 +18,10 @@ import           Diagrams.Prelude       hiding (Wrapped, output)
 import           Diagrams.TwoD.Text
 import           Diagrams.TwoD.Image
 
--- import Language.Haskell.TH
-import qualified Language.Haskell.TH.Syntax   as TH
-
 import           Diagrams.Tests
+import           Diagrams.Tests.Assets
 import           Diagrams.Tests.CmdLine
-import           Data.FileEmbed (makeRelativeToProject, embedFile)
+
 
 defaultRunTests
   :: (Typeable b, BackendBuild b, V b ~ V2)
@@ -331,19 +328,30 @@ radialGradient_example = rg
 
 imageTests :: TestGroup V2
 imageTests = TestGroup "images"
-  [ Test "embedded image" embeddedImage_example
-  , Test "external image" externalImage_example
+  [ Test "embedded-image-alpha" embeddedImageAlpha_example
+  , Test "embedded-image" embeddedImage_example
+  , Test "external-image-png" externalImageJpg_example
+  , Test "external-image-jpg" externalImagePng_example
   ]
+
+embeddedImageAlpha_example :: Diagram V2
+embeddedImageAlpha_example =
+  let img = either error id $ imageEmbBS imgAlphaBS
+  in  scaleUToX 5 img # rotateBy (-1/17)
 
 embeddedImage_example :: Diagram V2
 embeddedImage_example =
-  let imageBS = $(makeRelativeToProject "mla.jpg" >>= embedFile)
-      img = either error id $ loadImageEmbBS imageBS
-  in  scaleUToX 5 img # rotateBy (1/17) <> square 10 # fc lightgrey
+  let img = either error id $ imageEmbBS imgBS
+  in  scaleUToX 5 img # rotateBy (-1/17)
 
-externalImage_example :: Diagram V2
-externalImage_example =
-  let imagePath = $(TH.lift =<< makeRelativeToProject "mla.jpg")
-      img = image $ uncheckedImageRef 476 720 imagePath
-  in  square 10 # fc blue <> scaleUToX 5 img # rotateBy (1/17)
+externalImagePng_example :: Diagram V2
+externalImagePng_example =
+  let V2 w h = pngImgSize
+      img = imageExtUnchecked w h pngImgPath
+  in  scaleUToX 5 img # bg dodgerblue # rotateBy (1/17)
 
+externalImageJpg_example :: Diagram V2
+externalImageJpg_example =
+  let V2 w h = jpgImgSize
+      img = imageExtUnchecked w h jpgImgPath
+  in  scaleUToX 5 img # reflectX # pad 1.1 # bg green
