@@ -1,5 +1,6 @@
-{-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TypeFamilies    #-}
 
 module Diagrams.Tests.TwoD
   ( twoDTests
@@ -14,11 +15,16 @@ import           Data.Typeable
 import           System.Directory
 import           System.FilePath
 
-import           Diagrams.Prelude hiding (Wrapped, output)
+import           Diagrams.Prelude       hiding (Wrapped, output)
 import           Diagrams.TwoD.Text
+import           Diagrams.TwoD.Image
+
+-- import Language.Haskell.TH
+import qualified Language.Haskell.TH.Syntax   as TH
 
 import           Diagrams.Tests
 import           Diagrams.Tests.CmdLine
+import           Data.FileEmbed (makeRelativeToProject, embedFile)
 
 defaultRunTests
   :: (Typeable b, BackendBuild b, V b ~ V2)
@@ -36,8 +42,9 @@ defaultRunTests format b = do
       testOptions = refOpts backendName "" (formatExtension format) referenceFolder
   case filterTests testGroups twoDTests of
     Left err    -> error err
-    Right tests -> saveHtml testOptions tests htmlPath
-  renderTests format b outputFolder (dims2D 512 512) twoDTests
+    Right tests -> do
+      saveHtml testOptions tests htmlPath
+      renderTests format b outputFolder (dims2D 512 512) tests
 
 -- | List of default examples.
 twoDTests :: [TestGroup V2]
@@ -46,6 +53,7 @@ twoDTests =
   , textTests
   , fillRuleTests
   , gradientTests
+  , imageTests
   ]
 
 basicTests :: TestGroup V2
@@ -318,3 +326,24 @@ radialGradient_example = rg
     sq3 = square 1 # fillTexture gradient3
 
     rg = hsep 0.25 [sq1, sq2, sq3]
+
+-- image tests ---------------------------------------------------------
+
+imageTests :: TestGroup V2
+imageTests = TestGroup "images"
+  [ Test "embedded image" embeddedImage_example
+  , Test "external image" externalImage_example
+  ]
+
+embeddedImage_example :: Diagram V2
+embeddedImage_example =
+  let imageBS = $(makeRelativeToProject "mla.jpg" >>= embedFile)
+      img = either error id $ loadImageEmbBS imageBS
+  in  scaleUToX 5 img # rotateBy (1/17) <> square 10 # fc lightgrey
+
+externalImage_example :: Diagram V2
+externalImage_example =
+  let imagePath = $(TH.lift =<< makeRelativeToProject "mla.jpg")
+      img = image $ uncheckedImageRef 476 720 imagePath
+  in  square 10 # fc blue <> scaleUToX 5 img # rotateBy (1/17)
+
