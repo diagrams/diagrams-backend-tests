@@ -5,4 +5,4 @@ import           Diagrams.Tests
 import           Diagrams.Tests.TwoD
 
 main :: IO ()
-main = defaultRunTests PDF PGF
+main = defaultRunTests PDF PGF twoDTests

@@ -5,4 +5,4 @@ import           Diagrams.Tests
 import           Diagrams.Tests.TwoD
 
 main :: IO ()
-main = defaultRunTests PNG Rasterific
+main = defaultRunTests PNG Rasterific twoDTests

@@ -29,19 +29,21 @@ defaultRunTests
   -- ^ test output format
   -> b
   -- ^ backend
+  -> [TestGroup V2]
+  -- ^ tests
   -> IO ()
-defaultRunTests format b = do
+defaultRunTests format b tests = do
   let backendName = show (typeOf b)
   TestOpts {..} <- testOpts backendName
   writeFile "the-path.txt" referenceFolder
   createDirectoryIfMissing True outputFolder
   let htmlPath = outputFolder </> "index.html"
       testOptions = refOpts backendName "" (formatExtension format) referenceFolder
-  case filterTests testGroups twoDTests of
-    Left err    -> error err
-    Right tests -> do
-      saveHtml testOptions tests htmlPath
-      renderTests format b outputFolder (dims2D 512 512) tests
+  case filterTests testGroups tests of
+    Left err -> error err
+    Right ts -> do
+      saveHtml testOptions ts htmlPath
+      renderTests format b outputFolder (dims2D 512 512) ts
 
 -- | List of default examples.
 twoDTests :: [TestGroup V2]
