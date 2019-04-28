@@ -15,8 +15,9 @@ import           System.Directory
 import           System.FilePath
 
 import           Diagrams.Prelude       hiding (Wrapped, output)
-import           Diagrams.TwoD.Text
 import           Diagrams.TwoD.Image
+import           Diagrams.TwoD.Text
+import           Geometry.TwoD.Offset
 
 import           Diagrams.Tests
 import           Diagrams.Tests.Assets
@@ -53,6 +54,7 @@ twoDTests =
   , fillRuleTests
   , gradientTests
   , imageTests
+  , offsetTests
   ]
 
 basicTests :: TestGroup V2
@@ -357,3 +359,37 @@ externalImageJpg_example =
   let V2 w h = jpgImgSize
       img = imageExtUnchecked w h jpgImgPath
   in  scaleUToX 5 img # reflectX # pad 1.1 # bg green
+
+-- offset tests --------------------------------------------------------
+
+offsetTests :: TestGroup V2
+offsetTests = TestGroup "offset"
+  [ Test "offset-triangle" offsetTriangle_example
+  , Test "expand-triangle" expandTriangle_example
+  ]
+
+offsetTriangle_example :: Diagram V2
+offsetTriangle_example =
+  let tri sz off j = showOrigin . lw 5 . stroke $
+        offsetTrail' (def & offsetJoin .~ j) off (triangle sz)
+      row sz off = hsepEven 2 $
+        map (tri sz off) [LineJoinMiter, LineJoinBevel, LineJoinRound]
+  in frame 0.1 . vsepEven 2 $
+    [ row 1 0.3
+    , row 1.5 (-0.2)
+    ]
+
+expandTriangle_example :: Diagram V2
+expandTriangle_example =
+  let tri j = showOrigin . stroke $
+        expandTrail' (def & expandJoin .~ j) 0.1 (triangle 1)
+      row = hsepEven 2 $
+        map tri [LineJoinMiter, LineJoinBevel, LineJoinRound]
+  in frame 0.1 . vsepEven 2 $
+    [ row # lw 5
+    , row # lw 0 # fc green
+    , hsepEven 2 $
+      map
+        (\j -> triangle 1 # lw 20 # lineJoin j # showOrigin)
+        [LineJoinMiter, LineJoinBevel, LineJoinRound]
+    ]
