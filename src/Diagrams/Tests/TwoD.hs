@@ -55,6 +55,7 @@ twoDTests =
   , gradientTests
   , imageTests
   , offsetTests
+  , queryTests
   ]
 
 basicTests :: TestGroup V2
@@ -393,3 +394,23 @@ expandTriangle_example =
         (\j -> triangle 1 # lw 20 # lineJoin j # showOrigin)
         [LineJoinMiter, LineJoinBevel, LineJoinRound]
     ]
+
+-- query tests ---------------------------------------------------------
+
+queryTests :: TestGroup V2
+queryTests = TestGroup "query"
+  [ Test "sample-shape" sampleShape_example
+  ]
+
+sampleShape_example :: Diagram V2
+sampleShape_example = shape # lw thick <> points
+  where
+    shape = triangle 10
+      # rotate (15 @@ deg)
+      # translateX (-3)
+    p2s = [ P2 x y | x <- [-10..10], y <- [-10..10] ]
+    points = position (map mkPoint p2s)
+    mkPoint p = (p, circle 0.4 # lw none # fc c)
+      where
+        c | inquire shape p = red
+          | otherwise       = lightgray
