@@ -15,9 +15,9 @@ postscriptTester :: (String, Test Double -> IO Html)
 postscriptTester =
   ( "postscript"
   , \ (Test nm dig) -> do
-      renderDia Postscript
+      renderDias
         (PostscriptOptions (name nm "eps") (dims2D 200 200) EPS)
-        dig
+        [dig]
 --      rawSystem "epstopdf" [name nm "eps"]
       system $ unwords ["convert", "-alpha", "on", name nm "eps", name nm "png32"]
       -- The generated image.

@@ -57,7 +57,7 @@ runTests tests name backends = do
                             ++
                             map ((th <<) . (++ " output")) backendNames
         result_rows <- sequence
-                [ do testHtmls <- mapM ($t) execs
+                [ do testHtmls <- mapM ($ t) execs
                      let golden = figure $ H.image ! [src ("ref/" ++ nm ++ ".png")]
                      return . tr . concatHtml $
                        [ td ! [valign "top", bgcolor "#eeeeee"]  $ toHtml nm
